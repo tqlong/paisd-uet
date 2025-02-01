@@ -21,3 +21,8 @@ _minted-wp/
 *.toc
 *.crumbs
 package/
+*.synctex.gz
+*.nav
+*.snm
+*.xdv
+/images/faces/

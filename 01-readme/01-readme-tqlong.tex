@@ -1,0 +1,268 @@
+\documentclass{beamer}
+
+% Vietnamese support
+\usepackage{fontenc}
+
+\newcommand{\ul}[1]{\emph{#1}}
+
+% Beamer theme
+\usetheme{Berlin}
+
+\title{Thực hành phát triển hệ thống Trí tuệ nhân tạo\\
+Tài liệu phần mềm
+}
+\author{Trần Quốc Long}
+\institute{Trường ĐH Công nghệ, ĐHQG Hà Nội}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Mục lục}
+    \tableofcontents
+\end{frame}
+
+\section{Giới thiệu}
+
+\begin{frame}{Thiết kế}
+    \begin{columns}
+        \column{0.3\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{../images/books/freeman}
+        \end{figure}
+        \column{0.7\textwidth}
+            \only<1>{
+                \begin{block}{Định nghĩa}
+                    Design encompasses all the activities involved in 
+                    \ul{conceptualizing}, \ul{framing}, \ul{implementing}, \ul{commissioning}, 
+                    and ultimately \ul{modifying} complex systems—not just the activity
+                    following requirements specification and before programming, 
+                    as it might be translated from a stylized software engineering
+                    process.\\
+                    \textbf{Peter Freeman and David Hart, \emph{Communications of the ACM}, vol. 47, no. 8, 2004}
+                \end{block}
+            }
+            \only<2>{
+                \begin{block}{Định nghĩa}
+                    Thiết kế bao gồm tất cả các hoạt động liên quan đến 
+                    \ul{khái niệm hóa}, \ul{định hình}, \ul{triển khai}, \ul{đưa vào vận hành} 
+                    và cuối cùng là \ul{điều chỉnh} các hệ thống phức tạp—không chỉ là hoạt động
+                    diễn ra sau khi đặc tả yêu cầu và trước khi lập trình, 
+                    như cách tiếp cận trong một quy trình kỹ nghệ phần mềm truyền thống.\\
+                    \textbf{Peter Freeman và David Hart, \emph{Communications of the ACM}, tập 47, số 8, 2004}
+                \end{block}
+            }
+        \end{columns}
+\end{frame}
+
+\begin{frame}[label=interiors]{So sánh: Nội thất và Phần mềm}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.5\textwidth]{interior}
+            \caption{Nội thất}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.5\textwidth]{floor-plan}
+            \caption{Thiết kế Nội thất}
+        \end{figure}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.5\textwidth]{docker-logo}
+            \caption{Phần mềm}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.5\textwidth]{docker-uml}
+            \caption{Thiết kế Phần mềm}
+        \end{figure}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Giải thích \& thiết kế}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.3\textwidth]{floor-plan}
+        \caption{ {\textcolor{red}{Làm thế nào để giải thích?} --> Tiêu chuẩn} }
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.3\textwidth]{interior}
+        \caption{ {\textcolor{blue}{Làm thế nào để thiết kế?} --> Mẫu thiết kế} }
+    \end{figure}
+\end{frame}
+
+\section{Tài liệu mô tả thiết kế phần mềm}
+
+\begin{frame}[label=sdd]{Tài liệu}
+    \begin{block}{Tài liệu}
+        % big font
+        \Huge
+        Một tài liệu tốt là \textcolor{red}{\ul{tiền đề}} cho một thiết kế tốt.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Mô tả thiết kế phần mềm (SDD) theo IEEE 1016}
+    \begin{columns}
+        \column{0.3\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{../images/books/ieee-1016}
+        \end{figure}
+        \column{0.7\textwidth}
+        \begin{block}{Định nghĩa}
+            Một SDD (Software Design Description) là biểu diễn của
+            thiết kế phần mềm nhằm ghi lại thông tin thiết kế
+            và truyền tải thông tin thiết kế đó đến
+            các bên liên quan.
+            Tiêu chuẩn này được sử dụng trong
+            các tình huống thiết kế yêu cầu phải chuẩn
+            bị SDD rõ ràng.\\
+            \textbf{IEEE 1016-2009: Tiêu chuẩn IEEE về Công nghệ Thông tin---Thiết kế Hệ thống---Mô tả Thiết kế Phần mềm}
+        \end{block}
+        \end{columns}
+\end{frame}
+
+\begin{frame}{Các tài liệu trong SDD}
+    \begin{enumerate}
+        \item Từ điển thuật ngữ (Glossary)
+        \item Ngôn ngữ thiết kế (Languages)
+        \item Các bên liên quan (Stakeholders)
+        \item Các mối quan tâm (Concerns)
+        \\Yêu cầu: Chức năng (Functional) \& Phi chức năng (Non-functional)
+        \item Các lát cắt (Viewpoints)
+        \item Các thành phần (Elements)
+        \item Lý do cho các quyết định thiết kế (Rationale)
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Từ điển thuật ngữ}
+    \begin{block}{Từ điển thuật ngữ}
+        \begin{itemize}
+            \item \ul{Yêu cầu (request)} là gói dữ liệu gửi từ \ul{máy khách} đến \ul{máy chủ}.
+            \item \ul{Máy khách (client)} là máy tính có trình duyệt web.
+            \item \ul{Máy chủ (server)} là máy tính có phần mềm cài đặt.
+        \end{itemize}
+    \end{block}
+    \onslide<2>{
+    \Huge
+    \textcolor{red}{Nếu bạn không hiểu, đó là lỗi của tôi!}
+    }
+\end{frame}
+
+\begin{frame}{Ngôn ngữ thiết kế}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.5\textwidth]{bad-diagram}
+            \caption{Không tốt}
+        \end{figure}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{good-uml}
+            \caption{Tốt (UML)}
+        \end{figure}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Các bên liên quan}
+    \begin{block}{Các bên liên quan}
+        \begin{quote}
+            Xác định các bên liên quan là quá trình
+            xác định những người, nhóm hoặc tổ chức
+            có thể ảnh hưởng hoặc bị ảnh hưởng bởi
+            quyết định, hoạt động hoặc kết quả của dự án.
+        \end{quote}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Các mối quan tâm}
+    Yêu cầu
+    \begin{itemize}
+        \item Chức năng (Functional)
+        \item Phi chức năng (Non-functional)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Các lát cắt}
+    \begin{block}{}
+        \begin{quote}
+            Một lát cắt là một cách nhìn vào hệ thống
+            từ một góc độ cụ thể, mô tả một số khía cạnh
+            của hệ thống và cung cấp thông tin cần thiết
+            cho một số bên liên quan.
+        \end{quote}
+    \end{block}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{viewpoint}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Các thành phần}
+    \begin{block}{Ví dụ}
+        \begin{itemize}
+            \item Mô-đun
+            \item Hành vi
+            \item Dữ liệu
+            \item Giao diện
+        \end{itemize}
+    \end{block}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{element}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Lý do cho các quyết định thiết kế}
+    \only<1>{
+        \begin{block}{Lý do}
+            \begin{itemize}
+                \item Lý do chọn mô-đun A thay vì mô-đun B
+                \item Lý do chọn giao diện A thay vì giao diện B
+                \item Lý do chọn cơ sở dữ liệu A thay vì cơ sở dữ liệu B
+                \item Lý do chọn công nghệ A thay vì công nghệ B
+                \item Lý do chọn mẫu thiết kế A thay vì mẫu thiết kế B
+            \end{itemize}
+        \end{block}
+    }
+    \only<2>{
+    \begin{block}{Công cụ}
+        \begin{itemize}
+            \item Quyết định đa tiêu chí (Multi-Criteria Decision Making (MCDM))
+            \item Phân tích lựa chọn thiết kế (Architecture Trade-off Analysis Method (ATAM))
+            \item Bảng quyết định (Decision Table)
+            \item Phân tích nhiều yếu tố (Multi Factor Analysis)
+            \item Ma trận quyết định (Decision Matrix)
+        \end{itemize}
+    \end{block}
+    \Large \textcolor{red}{
+        Không cần tin tôi, hãy tin quyết định của tôi !!!
+    }
+    }
+\end{frame}
+
+\section{Công cụ viết tài liệu}
+
+\begin{frame}{Công cụ viết tài liệu}
+    \begin{block}{Công cụ}
+        \begin{itemize}
+            \item \LaTeX
+            \item Markdown (Notion, GitHub)
+            \item Visual Paradigm
+            \item UML
+            \item UI Mockups
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\end{document}

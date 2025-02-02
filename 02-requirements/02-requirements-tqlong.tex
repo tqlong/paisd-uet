@@ -1,0 +1,436 @@
+\documentclass{beamer}
+
+% Vietnamese support
+\usepackage{fontenc}
+
+\newcommand{\ul}[1]{\emph{#1}}
+
+% Beamer theme
+\usetheme{Berlin}
+
+\title{Thực hành phát triển hệ thống Trí tuệ nhân tạo\\
+Kỹ nghệ yêu cầu
+}
+\author{Trần Quốc Long}
+\institute{Trường ĐH Công nghệ, ĐHQG Hà Nội}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Mục lục}
+    \tableofcontents
+\end{frame}
+
+\section{Giới thiệu}
+
+\begin{frame}{Giới thiệu}
+    \begin{columns}
+        \column{0.3\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{../images/books/agile-martin}
+        \end{figure}
+        \column{0.7\textwidth}
+            \only<1>{
+                \begin{block}{Yêu cầu}
+                    If you are lucky, you start a project with a clear picture
+                    of what you want the system to be. The design of the
+                    system is a vital image in your mind. If you are luckier
+                    still, the clarity of that design makes it to the first
+                    release.\\
+                    \textbf{Robert Martin}, \emph{Agile Software Development. Principles, Patterns,
+                    and Practices}
+                \end{block}
+            }
+            \only<2>{
+                \begin{block}{Yêu cầu}
+                    Nếu bạn may mắn, bạn bắt đầu một dự án với một cái nhìn rõ ràng
+                    về hệ thống mong muốn. Thiết kế của
+                    hệ thống là một hình ảnh quan trọng trong tâm trí bạn.
+                    Nếu bạn may mắn hơn
+                    nữa, sự rõ ràng của thiết kế vẫn còn nguyên ở phiên
+                    bản phần mềm đầu tiên.\\
+                    \textbf{Robert Martin}, \emph{Agile Software Development. Principles, Patterns,
+                    and Practices}
+                \end{block}
+            }
+        \end{columns}
+\end{frame}
+
+\begin{frame}{Giới thiệu}
+    \begin{columns}
+        \column{0.3\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{../images/books/code-ahead}
+        \end{figure}
+        \column{0.7\textwidth}
+            \only<1>{
+                \begin{block}{Yêu cầu}
+                    Trách nhiệm của một lập trình viên là
+                    đảm bảo rằng mọi nhiệm vụ đều có
+                    \ul{ranh giới (yêu cầu)} rõ ràng.\\
+                    \textbf{Yegor Bugayenko}, \emph{Code Ahead}
+                \end{block}
+            }
+        \end{columns}
+\end{frame}
+
+\section{Ca sử dụng (Use Cases, Functional Requirements)}
+
+\begin{frame}[label=interiors]{Ca sử dụng (Use Cases)}
+    \begin{columns}
+        \column{0.3\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../images/faces/ivar-jacobson}
+            \caption{Ivar Jacobson}
+        \end{figure}
+        \column{0.3\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../images/faces/grady-booch}
+            \caption{Grady Booch}
+        \end{figure}
+        \column{0.3\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{../images/faces/james-rumbaugh}
+            \caption{James Rumbaugh}
+        \end{figure}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Ca sử dụng (Use Cases)}
+    \begin{columns}
+        \column{0.3\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{../images/books/uml-book}
+        \end{figure}
+        \column{0.7\textwidth}
+            \only<1>{
+                \begin{block}{Yêu cầu}
+                    Không có tiêu chuẩn để viết một ca sử dụng
+                    và mỗi trường hợp có thể dùng các định dạng khác nhau.\\
+                    \textbf{Martin Fowler}, \emph{UML Distilled}
+                \end{block}
+            }
+        \end{columns}
+\end{frame}
+
+\begin{frame}{Ví dụ về ca sử dụng (Who does What)}
+    \begin{block}{}
+        \begin{itemize}
+            \item Ca sử dụng: Tạo mã QR
+            \item Tác nhân: Người dùng
+            \item Luồng cơ bản:
+            \begin{enumerate}
+                \item Người dùng nhập URL vào ô HTML.
+                \item Hệ thống tạo hình ảnh PNG của mã QR.
+                \item Người dùng tải hình ảnh qua HTTP.
+            \end{enumerate}
+            \item Mở rộng:
+            \begin{enumerate}
+                \item Người dùng nhập URL hỏng.
+                \begin{enumerate}
+                    \item Hệ thống hiển thị hộp thoại thông báo lỗi.
+                    \item Người dùng xác nhận.
+                \end{enumerate}
+                \item Người dùng hủy tải về.
+                \begin{enumerate}
+                    \item Hệ thống dừng gửi dữ liệu qua HTTP.
+                \end{enumerate}
+            \end{enumerate}
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Biểu đồ ca sử dụng (Use Case Diagram)}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{uc-diagram}
+    \end{figure}
+\end{frame}
+
+% \section{Phân tích ca sử dụng}
+
+\begin{frame}{Phân tích điểm chức năng (FPA)}
+    \begin{block}{}
+        \begin{itemize}
+            \item Phân tích điểm chức năng (FPA) được phát triển
+            bởi Allan Albrecht vào cuối những năm 1970 tại IBM.
+            \item International Function Point Users Group (IFPUG).
+            \item Được quy định bởi tiêu chuẩn ISO 20296, ISO/IEC 14143.
+            \item Chia nhỏ yêu cầu thành bốn loại di chuyển dữ liệu: Entry (E), Exit (X), Read (R), Write (W).
+        \end{itemize}
+    \end{block}
+    \Large Dùng để ước lượng khối lượng công việc (Function Points).
+\end{frame}
+
+%% TODO use case points
+
+%% Traceability Matrix
+\begin{frame}{Ma trận theo dõi (Traceability Matrix)}
+    \begin{block}{}
+        \begin{quote}
+            Ma trận theo dõi là một công cụ quản lý dự án
+            để theo dõi quan hệ giữa các yêu cầu và các yếu tố
+            thiết kế của hệ thống.\\
+            %% Use Cases, Non-Functional Requirements, Test Cases, Classes, Packages, Servers, Containers, Components, Nodes, etc.
+            \small Ca sử dụng, yêu cầu phi chức năng, ca kiểm thử, lớp, gói, máy chủ, container, thành phần, node, v.v.
+        \end{quote}
+    \end{block}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{matrix}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Kiểm tra (verification) and Thẩm định (validation)}
+    \begin{block}{Kiểm tra (Do it right?)}
+        Kiểm tra là quá trình đảm bảo rằng phần mềm được
+        xây dựng đúng theo các yêu cầu và đặc tả kỹ thuật.
+    \end{block}
+    \begin{block}{Thẩm định (Do the right thing?)}
+        Thẩm định là quá trình đảm bảo rằng các yêu cầu và
+        đặc tả kỹ thuật của phần mềm đáp ứng đúng nhu cầu và
+        mong đợi của người dùng.
+    \end{block}
+\end{frame}
+
+\section{Yêu cầu phi chức năng (Non-Functional)}
+
+\begin{frame}{Yêu cầu phi chức năng (Non-Functional Requirements)}
+    \begin{block}{}
+        \begin{itemize}
+            \item Hiệu suất (Performance, Capacity)
+            \item Sẵn sàng (Availability)
+            \item Bảo mật (Security)
+            \item Khả năng phục hồi (Recoverability)
+            \item Dễ sử dụng (Usability)
+            \item Bảo trì (Maintainability)
+            \item Di động (Mobile)
+            \item Đáng tin cậy (Reliability)
+            \item Tích hợp (Integration)
+            \item V.v.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Tính sẵn sàng}
+    \begin{block}{}
+        \begin{itemize}
+            \item Sẵn sàng (Availability) là tỷ lệ thời gian hệ thống
+            hoạt động so với tổng thời gian.
+            \[A = \dfrac{E_\text{up}}{E_\text{down} + E_\text{up}}\]
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+%% capacity
+\begin{frame}{Hiệu suất}
+    \begin{block}{}
+        \begin{itemize}
+            \item Hiệu suất (Capacity) là số lần giao tiếp mà hệ thống
+            có thể xử lý trong một đơn vị thời gian.
+            \[CPS = \text{Clicks Per Second}\]
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+%% recovery time objective
+\begin{frame}{Khả năng phục hồi}
+    \begin{block}{}
+        \begin{itemize}
+            \item Khả năng phục hồi (Recovery) là thời gian cần thiết
+            để hệ thống phục hồi sau một sự cố.
+            \[RTO = \text{Recovery Time Objective}\]
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+%% maintainability
+\begin{frame}{Bảo trì}
+    \begin{block}{}
+        \begin{itemize}
+            \item Bảo trì (Maintainability) là thời gian cần thiết
+            để sửa một lỗi trong hệ thống.
+            \[MTTR = \text{Mean Time To Repair}\]
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+%% good and bad NFRs
+\begin{frame}{Yêu cầu phi chức năng}
+    \begin{columns}
+    \column{0.5\textwidth}
+        {\Huge \color{red}Không tốt}
+        \begin{itemize}
+            \item Phần mềm phải nhanh.
+            \item Phải dễ bảo trì.
+            \item Giao diện người dùng phải hấp dẫn.
+        \end{itemize}
+    \column{0.5\textwidth}
+        {\Huge \color{blue}Tốt}
+        \begin{itemize}
+            \item Được cài đặt trên máy chủ kiểm thử (xem Phụ lục A),
+            phần mềm phải phản hồi trong vòng 20ms
+            cho các yêu cầu trong UC1--UC7.
+            \item Thời gian tối đa để sửa một lỗi
+            không quá hai giờ.
+            \item Ít nhất 80\% người dùng beta phải xác nhận
+            ẩn danh rằng giao diện người dùng đủ hấp dẫn.
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+%% các lỗi chính trong mô tả yêu cầu
+\begin{frame}{Các lỗi chính trong mô tả yêu cầu}
+    \begin{block}{}
+        \begin{itemize}
+            \item Không có từ điển thuật ngữ hoặc viết từ điển tồi.
+            \item Dùng câu hỏi, thảo luận, ý kiến.
+            \item Lẫn lộn yêu cầu chức năng và phi chức năng.
+            \item Lẫn lộn yêu cầu và thông tin bổ sung.
+            \item Yêu cầu phi chức năng không đo được.
+            \item Đưa kèm hướng dẫn cài đặt, triển khai.
+            \item Thiếu góc nhìn của người dùng.
+            \item Nhiễu.
+            \item Không rõ ràng (Who does What).
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\section{Ước lượng}
+
+\begin{frame}{Ước lượng}
+    \begin{columns}
+        \column{0.3\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{../images/books/boehm}
+        \end{figure}
+        \column{0.7\textwidth}
+            \only<1>{
+                \begin{block}{}
+                    Trong các quyết định thiết kế,
+                    yếu tố quan trọng và khó
+                    khăn nhất là ước tính
+                    chi phí của một dự án phần mềm.\\
+                    \textbf{Barry W. Boehm}, \emph{Software Engineering Economics}
+                \end{block}
+            }
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Ước lượng}
+    \begin{block}{}
+        \begin{enumerate}
+            \item Ước lượng kích thước theo kilo-line-of-code
+            \[K = FP \times \text{hệ số chuyển đổi}\]
+            \item Tìm hệ số điều chỉnh năng lực ($F$).
+            \item Tìm các hệ số $a$, $b$, $c$ và $d$ từ mô hình COCOMO II.
+            \item Tính kích thước theo người-tháng (MM - man-month):
+            \[E = a \times K^b \times F\]
+            \item Tính thời gian theo tháng (D):
+            \[D = c \times E^d\]
+        \end{enumerate}
+    \end{block}
+\end{frame}
+
+%% hệ số chuyển đổi
+\begin{frame}{Hệ số chuyển đổi}
+    \begin{block}{}
+        \begin{itemize}
+            \item Hệ số chuyển đổi (Conversion Factor) là tỷ lệ
+            giữa kích thước ước lượng và kích thước thực tế.
+            \[KLOC = FP \times \text{hệ số chuyển đổi}\]
+            \item Hệ số chuyển đổi theo ngôn ngữ (KLOC/FP)
+            \begin{itemize}
+                \item Java: 0.4
+                \item C\#: 0.5
+                \item C: 0.6
+                \item Python: 0.2
+                \item COBOL: 0.8
+            \end{itemize}
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+%% hệ số điều chỉnh năng lực
+\begin{frame}{Hệ số điều chỉnh năng lực}
+    \begin{block}{}
+        \begin{itemize}
+            \item Hệ số điều chỉnh năng lực (Effort Adjustment Factor) là
+            hệ số điều chỉnh dựa trên một số yếu tố ảnh hưởng
+            đến khả năng thực hiện của dự án.
+            \[F = \prod_{i=1}^n \text{hệ số hiệu chỉnh của yếu tố}_i\]
+            \item Mô hình COCOMO II có 17 yếu tố ảnh hưởng.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+%% các hệ số a, b, c, d
+\begin{frame}{Các hệ số $a$, $b$, $c$, $d$}
+    \begin{block}{}
+        \begin{itemize}
+            \item Các hệ số $a$, $b$, $c$, $d$ được xác định từ
+            mô hình COCOMO II.
+            \item Các hệ số này phụ thuộc vào các pha của dự án
+            (Early Design, Post-Architecture, Reuse Model).
+            \item Các hệ số này được xác định từ bảng.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+%% cone of uncertainty
+\begin{frame}{Nón không chắc chắn (Cone of Uncertainty)}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.6\textwidth]{cone}
+    \end{figure}
+    \Large\color{red} "Phần mềm này sẽ mất bao nhiêu tiền?"\\
+    "Việc phát triển sẽ kéo dài và tiêu hết tiền của bạn".
+\end{frame}
+
+%% books
+\begin{frame}{Tài liệu tham khảo}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{../images/books/wiegers}
+            \caption{Karl Wiegers, \emph{Software Requirements}}
+        \end{figure}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{../images/books/wiegers2}
+            \caption{Karl Wiegers, \emph{More About Software Requirements}}
+        \end{figure}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Tài liệu tham khảo}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{../images/books/cockburn}
+            \caption{Alistair Cockburn, \emph{Writing Effective Use Cases}}
+        \end{figure}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{../images/books/mcconnell}
+            \caption{Steve McConnell, \emph{Software Estimation: Demystifying the Black Art}}
+        \end{figure}
+    \end{columns}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,408 @@
+\documentclass{beamer}
+
+% Vietnamese support
+\usepackage{fontenc}
+
+\newcommand{\ul}[1]{\emph{#1}}
+
+% Beamer theme
+\usetheme{Berlin}
+
+\title{Thực hành phát triển hệ thống Trí tuệ nhân tạo\\
+Phân tích thiết kế hướng đối tượng (OOAD)
+}
+\author{Trần Quốc Long}
+\institute{Trường ĐH Công nghệ, ĐHQG Hà Nội}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Mục lục}
+    \tableofcontents
+\end{frame}
+
+\section{Lập trình hướng đối tượng}
+
+\begin{frame}{Các nguyên tắc trong lập trình hướng đối tượng}
+    \begin{columns}
+    \column{0.5\textwidth}
+    \begin{itemize}
+        \item \ul{Trừu tượng} (Abstraction)
+        \item \ul{Đóng gói} (Encapsulation)
+        \item \ul{Mô-đun} (Modularity)
+        \item \ul{Phân cấp} (Hierarchy)
+    \end{itemize}
+    \column{0.5\textwidth}
+    \begin{itemize}
+        \item \ul{Đa hình} (Polymorphism)
+        \item \ul{Thừa kế} (Inheritance)
+        \item \ul{Hợp thành} (Composition)
+        \item \ul{Giao tiếp} (Delegation)
+        \item \ul{Phân loại} (Subtyping)
+        \item \ul{Ẩn dữ liệu} (Data Hiding)
+        \item \ul{Tách biệt quan tâm} (Separation of Concerns)
+    \end{itemize}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Trừu tượng hoá}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{oop-vs-pp}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Trừu tượng và đa hình}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.6\textwidth]{java-abstraction}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Trừu tượng và đa hình}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.4\textwidth]{java-abstraction2}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Đóng gói}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{encapsulation}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Đóng gói và Ẩn dữ liệu}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{encapsulation2}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Đóng gói và Ẩn dữ liệu}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.6\textwidth]{naked1}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.6\textwidth]{naked2}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Mô-đun}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{modularity}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Phân cấp}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{hierarchy}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Thừa kế và Hợp thành}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{inheritance-versus-composition}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Thừa kế và Hợp thành}
+%% create table comparion of inheritance and composition
+%% when, why, how
+\begin{table}
+    \centering
+    \begin{tabular}{|p{2cm}|p{3.5cm}|p{3.5cm}|}
+        \hline
+        & \textbf{Thừa kế} & \textbf{Hợp thành} \\
+        \hline
+        \textbf{Khi nào} & Quan hệ ``is-a'' \newline ràng buộc chặt 
+        & Quan hệ ``has-a'' \newline ràng buộc lỏng\\
+        \hline
+        \textbf{Khi nào không} &
+            Chỉ dùng một phần chức năng của lớp cha\newline
+            Lớp cha thay đổi thường xuyên\newline
+            Cần thừa kế từ nhiều lớp cha
+        &  Thừa kế giảm nhiều trùng lặp hơn \newline
+        Chức năng cần được thừa kế và nạp chồng \\
+        \hline
+        \textbf{Tại sao} & Tái sử dụng mã nguồn & Tái sử dụng chức năng \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\end{frame}
+
+\section{Nguyên tắc SOLID}
+
+\begin{frame}{Các nguyên tắc SOLID}
+    \begin{columns}
+        \column{0.3\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{../images/books/agile-martin}
+        \end{figure}
+        \column{0.7\textwidth}
+            \only<1>{
+                \begin{block}{}
+                    Trong Agile, thái độ của nhà phát triển đối với
+                    thiết kế phần mềm giống như thái độ của các bác
+                    sĩ phẫu thuật đối với quy trình vô trùng.
+                    Quy trình vô trùng điều kiện tiên quyết của phẫu
+                    thuật. Nếu không có nó, nguy cơ nhiễm trùng sẽ
+                    quá cao để chịu đựng. Các nhà phát triển Agile
+                    cũng cảm thấy tương tự đối với thiết kế của họ.\\
+                    \textbf{Robert Martin}, \emph{Agile Software Development. Principles, Patterns, and Practices}
+                \end{block}
+            }
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Các nguyên tắc SOLID}
+    \begin{itemize}
+        \item \textbf{\color{red}S}ingle Responsibility Principle - đơn trách nhiệm
+        \item \textbf{\color{red}O}pen Close Principle - mở đóng
+        \item \textbf{\color{red}L}iskov Substitution Principle - thay thế Liskov
+        \item \textbf{\color{red}I}nterface Segregation Principle - phân chia giao diện
+        \item \textbf{\color{red}D}ependency Inversion Principle - đảo ngược phụ thuộc
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Nguyên tắc đơn trách nhiệm}
+    \begin{itemize}
+        \item Một lớp/mô-đun chỉ nên có một lý do để thay đổi
+        \item Mỗi lớp/mô-đun chỉ nên thực hiện một chức năng cụ thể
+        và phải đóng gói chức năng đó
+        \item Mỗi lớp/mô-đun chỉ nên thực hiện một vai trò
+    \end{itemize}
+
+    \begin{table}
+        \centering
+        \begin{tabular}{|p{4.5cm}|p{4.5cm}|}
+            \hline\vspace{-0.5cm}
+            \begin{center}\textbf{Nên dùng}\end{center} 
+            & \vspace{-0.5cm}\begin{center}\textbf{Không nên dùng}\end{center} \\
+            \hline
+            \vspace{-0.3cm}
+            \begin{itemize}
+                \item Lớp có nhiều chức năng không liên quan
+                \item Lớp quá lớn
+                \item Lớp có bộ phận hay thay đổi
+            \end{itemize}
+            & \vspace{-0.3cm}\begin{itemize}
+                \item Phân tách lớp khiến code phức tạp hơn
+                \item Phạm vi của lớp nhỏ, các thành phần liên quan mạnh
+                \item Hiệu suất giảm quá nhiều
+            \end{itemize} \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Nguyên tắc đơn trách nhiệm}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{srp}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Nguyên tắc mở đóng}
+    \Large Một lớp phải \textbf{\color{red}mở} để mở rộng
+    nhưng \textbf{\color{red}đóng} đối với sửa đổi
+    \vspace{-0.5cm}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{ocp}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Nguyên tắc thay thế Liskov}
+    Nếu với mỗi đối tượng $o_1$ thuộc lớp $S$ 
+    có đối tượng $o_2$ thuộc lớp $T$ sao cho mọi chương trình
+    $P$ viết dựa trên $T$ mà hành vi của $P$ không thay đổi
+    khi $o_1$ thay thế $o_2$ thì $S$ là lớp con của $T$
+    -- \textbf{Barbara Liskov}
+    % \vspace{-0.3cm}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{lsp}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Duck Typing}
+    \Large Nếu nó trông như vịt, bơi như vịt và 
+    kêu như vịt, thì chắc nó là vịt
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{duck}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Nguyên tắc phân chia giao diện}
+    \Large Đối tượng khách (client) không nên bị ép buộc
+    phụ thuộc vào các phương thức mà nó không sử dụng
+    -- \textbf{Robert Martin}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{isp}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Nguyên tắc đảo ngược phụ thuộc}
+    (a) Các module cấp cao không nên phụ thuộc vào
+    các module cấp thấp. Cả hai nên phụ thuộc vào các giao diện
+    (b) Các giao diện không nên phụ thuộc vào chi tiết.
+    Chi tiết nên phụ thuộc vào giao diện
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{dip}
+    \end{figure}
+\end{frame}
+
+% \begin{frame}{Lập trình cực đoan (XP)}
+%     \begin{figure}
+%         \centering
+%         \includegraphics[width=0.65\textwidth]{xp}
+%     \end{figure}
+% \end{frame}
+
+% \begin{frame}{Chi phí của bug}
+%     \begin{figure}
+%         \centering
+%         \includegraphics[width=0.9\textwidth]{cost-of-bug}
+%     \end{figure}
+% \end{frame}
+
+% \section{Các yếu tố chất lượng của thiết kế}
+
+% \begin{frame}{Tính đơn giản}
+%     \begin{itemize}
+%         \item \ul{\color{red}Đầu tư} nhỏ nhất có thể vào thiết kế trước khi
+%         nhận được lợi nhuận từ nó. -- \textbf{Kent Beck}
+%         \item Thiết kế chứa \ul{\color{red}sự phức tạp không cần thiết} khi
+%         có các yếu tố không hữu ích. Điều này thường xảy ra khi
+%         ta dự đoán các thay đổi có thể có đối với yêu cầu và tìm cách
+%         xử lý những thay đổi tiềm năng đó. -- \textbf{Robert Martin}        
+%         \item Không làm chủ sự phức tạp của phần mềm 
+%         có hậu quả là các dự án bị trễ, vượt ngân sách và thiếu sót
+%         so với yêu cầu. Tình trạng này gọi là
+%         \ul{\color{red}khủng hoảng phần mềm}, nhưng thẳng thắn mà nói,
+%         một căn bệnh kéo dài như vậy phải được gọi là
+%         trạng thái bình thường. -- \textbf{Grady Booch}
+%     \end{itemize}
+% \end{frame}
+
+% \begin{frame}{Tính đơn giản}
+%     \begin{figure}
+%         \centering
+%         \includegraphics[width=0.9\textwidth]{complexity1}
+%     \end{figure}
+% \end{frame}
+
+% \begin{frame}{Tính đơn giản}
+%     \begin{figure}
+%         \centering
+%         \includegraphics[width=0.8\textwidth]{complexity2}
+%     \end{figure}
+% \end{frame}
+
+% \begin{frame}{Tính đơn giản}
+%     \begin{block}{}
+%         Đức tính chính của một kiến trúc sư là khả năng
+%         \ul{giảm bớt sự phức tạp}. Một kiến trúc sư giỏi
+%         không bao giờ tự hào về một sơ đồ phức tạp. Thay vào
+%         đó, họ sẽ tự hào về một bản vẽ đơn giản và dễ hiểu
+%         với vài hình chữ nhật mà giải thích hoàn hảo một
+%         ứng dụng đa tầng. Việc này thực sự khó. Đó
+%         là nơi mà tư duy kiến trúc thực sự tỏa sáng
+%         -- \textbf{Yegor Bugayenko}
+%     \end{block}
+% \end{frame}
+
+% \begin{frame}{Tính không trùng lặp}
+%     \begin{itemize}
+%         \item Khi có \ul{\color{red}mã dư thừa} trong hệ thống, việc thay
+%         đổi hệ thống trở nên khó khăn. Các lỗi được tìm thấy
+%         phải được sửa trong mọi lần lặp lại. Tuy nhiên,
+%         vì mỗi lần lặp lại hơi khác nhau, nên việc sửa
+%         lỗi không phải lúc nào cũng giống nhau -- \textbf{Robert Martin}
+%     \end{itemize}
+% \end{frame}
+
+% \begin{frame}{Tính mô-đun hóa}
+%     \begin{itemize}
+%         \item Một thiết kế là \ul{\color{red}bất động} nếu nó
+%         chứa các thành phần
+%         được dùng trong các hệ thống khác, nhưng nỗ lực và
+%         rủi ro để tách các phần đó ra khỏi hệ thống ban đầu
+%         là quá lớn -- \textbf{Robert Martin}
+%         \item Một thiết kế là \ul{\color{red}cứng} nếu một
+%         thay đổi đơn lẻ gây ra một loạt các thay đổi tiếp
+%         theo trong các module phụ thuộc.
+%         Càng nhiều module phải thay đổi,
+%         thiết kế càng \ul{cứng} -- \textbf{Robert Martin}
+%     \end{itemize}
+% \end{frame}
+
+% \begin{frame}{Tài liệu tham khảo}
+%     \begin{columns}
+%         \column{0.5\textwidth}
+%         \begin{figure}
+%             \centering
+%             \includegraphics[width=0.4\textwidth]{../images/books/rup}
+%             \caption{Per Kroll và cộng sự, \emph{A Practitioner's Guide to the RUP}}
+%         \end{figure}
+%         \column{0.5\textwidth}
+%         \begin{figure}
+%             \centering
+%             \includegraphics[width=0.4\textwidth]{../images/books/agile-martin}
+%             \caption{Robert Martin,
+%             \emph{Agile Software Development. Principles, Patterns, and Practices}}
+%         \end{figure}
+%     \end{columns}
+% \end{frame}
+
+% \begin{frame}{Tài liệu tham khảo}
+%     \begin{columns}
+%         \column{0.5\textwidth}
+%         \begin{figure}
+%             \centering
+%             \includegraphics[width=0.4\textwidth]{../images/books/clean-architecture}
+%             \caption{Robert Martin, \emph{Clean Architecture: A Craftsman's Guide to Software Structure and Design}}
+%         \end{figure}
+%         \column{0.5\textwidth}
+%         \begin{figure}
+%             \centering
+%             \includegraphics[width=0.4\textwidth]{../images/books/code-complete}
+%             \caption{Steve McConnell, \emph{Code Complete}}
+%         \end{figure}
+%     \end{columns}
+% \end{frame}
+
+% \begin{frame}{Tài liệu tham khảo}
+%     \begin{columns}
+%         \column{0.5\textwidth}
+%         \begin{figure}
+%             \centering
+%             \includegraphics[width=0.4\textwidth]{../images/books/brooks}
+%             \caption{Frederick Brooks Jr., \emph{Mythical Man-Month, The: Essays on Software Engineering}}
+%         \end{figure}
+%         \column{0.5\textwidth}
+%         \begin{figure}
+%             \centering
+%             \includegraphics[width=0.4\textwidth]{../images/books/pragmatic}
+%             \caption{David Thomas và cộng sự, \emph{The Pragmatic Programmer: Your Journey To Mastery}}
+%         \end{figure}
+%     \end{columns}
+% \end{frame}
+
+\end{document}

@@ -1,0 +1,327 @@
+\documentclass{beamer}
+
+% Vietnamese support
+\usepackage{fontenc}
+
+\newcommand{\ul}[1]{\emph{#1}}
+
+% Beamer theme
+\usetheme{Berlin}
+
+\title{Thực hành phát triển hệ thống Trí tuệ nhân tạo\\
+RUP, Agile/XP
+}
+\author{Trần Quốc Long}
+\institute{Trường ĐH Công nghệ, ĐHQG Hà Nội}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Mục lục}
+    \tableofcontents
+\end{frame}
+
+\section{Các phương pháp phát triển phần mềm}
+
+\begin{frame}{Các phương pháp phát triển}
+    \begin{itemize}
+        \item Quy trình thác nước (Waterfall/SDLC)
+        \item Quy trình phát triển thống nhất (RUP)
+        \item Khung phần mềm của Microsoft (MSF)
+        \item Thư viện cơ sở hạ tầng CNTT (ITIL)
+        \item Phong cách Agile và các phương pháp khác
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Quy trình thác nước}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{waterfall}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Vòng đời phần mềm (SDLC)}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{sdlc}
+    \end{figure}
+\end{frame}
+
+\section{RUP}
+
+\begin{frame}{Quy trình phát triển thống nhất (RUP)}
+    Lặp và tăng trưởng
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{rup}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Lặp (Iterative)}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{iterative}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Tăng trưởng (Incremental)}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{i-and-i}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Vai trò trong RUP}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{rup-architect}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{rup-designer}
+    \end{figure}
+\end{frame}
+
+%% Microsoft
+\begin{frame}{Khung phần mềm của Microsoft (MSF)}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{msf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Thư viện cơ sở hạ tầng CNTT (ITIL)}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{itil}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Các phương pháp khác}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{spiral}
+            \caption{Spiral}
+        \end{figure}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.5\textwidth]{vmodel}
+            \caption{V-Model}
+        \end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.5\textwidth]{rad}
+            \caption{Rapid Application Development}
+        \end{figure}
+    \end{columns}
+\end{frame}
+
+\section{Agile}
+
+\begin{frame}{Agile}
+    \begin{columns}
+        \column{0.3\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{../images/books/agile-martin}
+        \end{figure}
+        \column{0.7\textwidth}
+            \only<1>{
+                \begin{block}{}
+                    Trong Agile, bức tranh tổng thể phát triển
+                    cùng với phần mềm. Với mỗi lần lặp,
+                    thiết kế của hệ thống được cải thiện 
+                    tốt nhất có thể tại thời điểm đó.
+                    Không cần dành nhiều thời gian để nhìn trước
+                    các yêu cầu và nhu cầu trong tương lai.\\
+                    \textbf{Robert Martin}, \emph{Agile Software Development. Principles, Patterns, and Practices}
+                \end{block}
+            }
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Quy trình Agile}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{agile}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Công cụ Kanban}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{kanban}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Khung Scrum}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{scrum}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Lập trình cực đoan (XP)}
+    \begin{columns}
+        \column{0.3\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{../images/books/xp}
+        \end{figure}
+        \column{0.7\textwidth}
+            \only<1>{
+                \begin{block}{}
+                    Liên tục tinh chỉnh thiết kế
+                    của hệ thống, bắt đầu từ một khởi đầu rất đơn giản.
+                    Loại bỏ bất kỳ sự linh hoạt nào không hiệu quả.\\
+                    \textbf{Kent Beck}, \emph{Extreme Programming Explained: Embrace Change}
+                \end{block}
+            }
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Lập trình cực đoan (XP)}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.65\textwidth]{xp}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Chi phí của bug}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{cost-of-bug}
+    \end{figure}
+\end{frame}
+
+\section{Các yếu tố chất lượng của thiết kế}
+
+\begin{frame}{Tính đơn giản}
+    \begin{itemize}
+        \item \ul{\color{red}Đầu tư} nhỏ nhất có thể vào thiết kế trước khi
+        nhận được lợi nhuận từ nó. -- \textbf{Kent Beck}
+        \item Thiết kế chứa \ul{\color{red}sự phức tạp không cần thiết} khi
+        có các yếu tố không hữu ích. Điều này thường xảy ra khi
+        ta dự đoán các thay đổi có thể có đối với yêu cầu và tìm cách
+        xử lý những thay đổi tiềm năng đó. -- \textbf{Robert Martin}        
+        \item Không làm chủ sự phức tạp của phần mềm 
+        có hậu quả là các dự án bị trễ, vượt ngân sách và thiếu sót
+        so với yêu cầu. Tình trạng này gọi là
+        \ul{\color{red}khủng hoảng phần mềm}, nhưng thẳng thắn mà nói,
+        một căn bệnh kéo dài như vậy phải được gọi là
+        trạng thái bình thường. -- \textbf{Grady Booch}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Tính đơn giản}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{complexity1}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Tính đơn giản}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{complexity2}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Tính đơn giản}
+    \begin{block}{}
+        Đức tính chính của một kiến trúc sư là khả năng
+        \ul{giảm bớt sự phức tạp}. Một kiến trúc sư giỏi
+        không bao giờ tự hào về một sơ đồ phức tạp. Thay vào
+        đó, họ sẽ tự hào về một bản vẽ đơn giản và dễ hiểu
+        với vài hình chữ nhật mà giải thích hoàn hảo một
+        ứng dụng đa tầng. Việc này thực sự khó. Đó
+        là nơi mà tư duy kiến trúc thực sự tỏa sáng
+        -- \textbf{Yegor Bugayenko}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Tính không trùng lặp}
+    \begin{itemize}
+        \item Khi có \ul{\color{red}mã dư thừa} trong hệ thống, việc thay
+        đổi hệ thống trở nên khó khăn. Các lỗi được tìm thấy
+        phải được sửa trong mọi lần lặp lại. Tuy nhiên,
+        vì mỗi lần lặp lại hơi khác nhau, nên việc sửa
+        lỗi không phải lúc nào cũng giống nhau -- \textbf{Robert Martin}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Tính mô-đun hóa}
+    \begin{itemize}
+        \item Một thiết kế là \ul{\color{red}bất động} nếu nó
+        chứa các thành phần
+        được dùng trong các hệ thống khác, nhưng nỗ lực và
+        rủi ro để tách các phần đó ra khỏi hệ thống ban đầu
+        là quá lớn -- \textbf{Robert Martin}
+        \item Một thiết kế là \ul{\color{red}cứng} nếu một
+        thay đổi đơn lẻ gây ra một loạt các thay đổi tiếp
+        theo trong các module phụ thuộc.
+        Càng nhiều module phải thay đổi,
+        thiết kế càng \ul{cứng} -- \textbf{Robert Martin}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Tài liệu tham khảo}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{../images/books/rup}
+            \caption{Per Kroll và cộng sự, \emph{A Practitioner's Guide to the RUP}}
+        \end{figure}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{../images/books/agile-martin}
+            \caption{Robert Martin,
+            \emph{Agile Software Development. Principles, Patterns, and Practices}}
+        \end{figure}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Tài liệu tham khảo}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{../images/books/clean-architecture}
+            \caption{Robert Martin, \emph{Clean Architecture: A Craftsman's Guide to Software Structure and Design}}
+        \end{figure}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{../images/books/code-complete}
+            \caption{Steve McConnell, \emph{Code Complete}}
+        \end{figure}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Tài liệu tham khảo}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{../images/books/brooks}
+            \caption{Frederick Brooks Jr., \emph{Mythical Man-Month, The: Essays on Software Engineering}}
+        \end{figure}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{../images/books/pragmatic}
+            \caption{David Thomas và cộng sự, \emph{The Pragmatic Programmer: Your Journey To Mastery}}
+        \end{figure}
+    \end{columns}
+\end{frame}
+
+\end{document}

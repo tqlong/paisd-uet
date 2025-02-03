@@ -2,6 +2,7 @@
 
 % Vietnamese support
 \usepackage{fontenc}
+\usepackage{qrcode}
 
 \newcommand{\ul}[1]{\emph{#1}}
 
@@ -268,141 +269,92 @@ Phân tích thiết kế hướng đối tượng (OOAD)
     \end{figure}
 \end{frame}
 
-% \begin{frame}{Lập trình cực đoan (XP)}
-%     \begin{figure}
-%         \centering
-%         \includegraphics[width=0.65\textwidth]{xp}
-%     \end{figure}
-% \end{frame}
+\section{Một số nguyên tắc khác}
 
-% \begin{frame}{Chi phí của bug}
-%     \begin{figure}
-%         \centering
-%         \includegraphics[width=0.9\textwidth]{cost-of-bug}
-%     \end{figure}
-% \end{frame}
+\begin{frame}{Thiết kế dựa trên hợp đồng}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.6\textwidth]{contracts}
+    \end{figure}
+\end{frame}
 
-% \section{Các yếu tố chất lượng của thiết kế}
+\begin{frame}{Tránh trùng lặp}
+    \Large Don't Repeat Yourself (DRY)
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{dry}
+    \end{figure}
+\end{frame}
 
-% \begin{frame}{Tính đơn giản}
-%     \begin{itemize}
-%         \item \ul{\color{red}Đầu tư} nhỏ nhất có thể vào thiết kế trước khi
-%         nhận được lợi nhuận từ nó. -- \textbf{Kent Beck}
-%         \item Thiết kế chứa \ul{\color{red}sự phức tạp không cần thiết} khi
-%         có các yếu tố không hữu ích. Điều này thường xảy ra khi
-%         ta dự đoán các thay đổi có thể có đối với yêu cầu và tìm cách
-%         xử lý những thay đổi tiềm năng đó. -- \textbf{Robert Martin}        
-%         \item Không làm chủ sự phức tạp của phần mềm 
-%         có hậu quả là các dự án bị trễ, vượt ngân sách và thiếu sót
-%         so với yêu cầu. Tình trạng này gọi là
-%         \ul{\color{red}khủng hoảng phần mềm}, nhưng thẳng thắn mà nói,
-%         một căn bệnh kéo dài như vậy phải được gọi là
-%         trạng thái bình thường. -- \textbf{Grady Booch}
-%     \end{itemize}
-% \end{frame}
+\begin{frame}{Giản lược tính năng}
+    \Large You Ain't Gonna Need It (YAGNI)
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{yagni}
+    \end{figure}
+\end{frame}
 
-% \begin{frame}{Tính đơn giản}
-%     \begin{figure}
-%         \centering
-%         \includegraphics[width=0.9\textwidth]{complexity1}
-%     \end{figure}
-% \end{frame}
+\begin{frame}{Đảo ngược kiểm soát}
+    \Large Inversion of Control (IoC)
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{ioc}
+    \end{figure}
+\end{frame}
 
-% \begin{frame}{Tính đơn giản}
-%     \begin{figure}
-%         \centering
-%         \includegraphics[width=0.8\textwidth]{complexity2}
-%     \end{figure}
-% \end{frame}
+\begin{frame}{OOP và Lập trình hàm}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{oop-vs-fp}
+    \end{figure}
+\end{frame}
 
-% \begin{frame}{Tính đơn giản}
-%     \begin{block}{}
-%         Đức tính chính của một kiến trúc sư là khả năng
-%         \ul{giảm bớt sự phức tạp}. Một kiến trúc sư giỏi
-%         không bao giờ tự hào về một sơ đồ phức tạp. Thay vào
-%         đó, họ sẽ tự hào về một bản vẽ đơn giản và dễ hiểu
-%         với vài hình chữ nhật mà giải thích hoàn hảo một
-%         ứng dụng đa tầng. Việc này thực sự khó. Đó
-%         là nơi mà tư duy kiến trúc thực sự tỏa sáng
-%         -- \textbf{Yegor Bugayenko}
-%     \end{block}
-% \end{frame}
+\begin{frame}{Nhược điểm của OOP}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{issues}
+        \end{figure}
+        \column{0.5\textwidth}
+        \Large What's Wrong With Object-Oriented Programming? (2016)
+        \qrcode[height=1in]{https://www.yegor256.com/2016/08/15/what-is-wrong-object-oriented-programming.html}
+    \end{columns}
+\end{frame}
 
-% \begin{frame}{Tính không trùng lặp}
-%     \begin{itemize}
-%         \item Khi có \ul{\color{red}mã dư thừa} trong hệ thống, việc thay
-%         đổi hệ thống trở nên khó khăn. Các lỗi được tìm thấy
-%         phải được sửa trong mọi lần lặp lại. Tuy nhiên,
-%         vì mỗi lần lặp lại hơi khác nhau, nên việc sửa
-%         lỗi không phải lúc nào cũng giống nhau -- \textbf{Robert Martin}
-%     \end{itemize}
-% \end{frame}
+\begin{frame}{Tài liệu tham khảo}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{../images/books/clean-code}
+            \caption{Robert C. Martin, \emph{Clean Code: A Handbook of Agile Software Craftsmanship}}
+        \end{figure}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{../images/books/booch-book}
+            \caption{Grady Booch và cộng sự,
+            \emph{Object-Oriented Analysis and Design with Applications}}
+        \end{figure}
+    \end{columns}
+\end{frame}
 
-% \begin{frame}{Tính mô-đun hóa}
-%     \begin{itemize}
-%         \item Một thiết kế là \ul{\color{red}bất động} nếu nó
-%         chứa các thành phần
-%         được dùng trong các hệ thống khác, nhưng nỗ lực và
-%         rủi ro để tách các phần đó ra khỏi hệ thống ban đầu
-%         là quá lớn -- \textbf{Robert Martin}
-%         \item Một thiết kế là \ul{\color{red}cứng} nếu một
-%         thay đổi đơn lẻ gây ra một loạt các thay đổi tiếp
-%         theo trong các module phụ thuộc.
-%         Càng nhiều module phải thay đổi,
-%         thiết kế càng \ul{cứng} -- \textbf{Robert Martin}
-%     \end{itemize}
-% \end{frame}
-
-% \begin{frame}{Tài liệu tham khảo}
-%     \begin{columns}
-%         \column{0.5\textwidth}
-%         \begin{figure}
-%             \centering
-%             \includegraphics[width=0.4\textwidth]{../images/books/rup}
-%             \caption{Per Kroll và cộng sự, \emph{A Practitioner's Guide to the RUP}}
-%         \end{figure}
-%         \column{0.5\textwidth}
-%         \begin{figure}
-%             \centering
-%             \includegraphics[width=0.4\textwidth]{../images/books/agile-martin}
-%             \caption{Robert Martin,
-%             \emph{Agile Software Development. Principles, Patterns, and Practices}}
-%         \end{figure}
-%     \end{columns}
-% \end{frame}
-
-% \begin{frame}{Tài liệu tham khảo}
-%     \begin{columns}
-%         \column{0.5\textwidth}
-%         \begin{figure}
-%             \centering
-%             \includegraphics[width=0.4\textwidth]{../images/books/clean-architecture}
-%             \caption{Robert Martin, \emph{Clean Architecture: A Craftsman's Guide to Software Structure and Design}}
-%         \end{figure}
-%         \column{0.5\textwidth}
-%         \begin{figure}
-%             \centering
-%             \includegraphics[width=0.4\textwidth]{../images/books/code-complete}
-%             \caption{Steve McConnell, \emph{Code Complete}}
-%         \end{figure}
-%     \end{columns}
-% \end{frame}
-
-% \begin{frame}{Tài liệu tham khảo}
-%     \begin{columns}
-%         \column{0.5\textwidth}
-%         \begin{figure}
-%             \centering
-%             \includegraphics[width=0.4\textwidth]{../images/books/brooks}
-%             \caption{Frederick Brooks Jr., \emph{Mythical Man-Month, The: Essays on Software Engineering}}
-%         \end{figure}
-%         \column{0.5\textwidth}
-%         \begin{figure}
-%             \centering
-%             \includegraphics[width=0.4\textwidth]{../images/books/pragmatic}
-%             \caption{David Thomas và cộng sự, \emph{The Pragmatic Programmer: Your Journey To Mastery}}
-%         \end{figure}
-%     \end{columns}
-% \end{frame}
+\begin{frame}{Tài liệu tham khảo}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{../images/books/stroustrup}
+            \caption{Bjarne Stroustrup, \emph{Programming: Principles and Practice Using C++}}
+        \end{figure}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{../images/books/head-first}
+            \caption{Brett McLaughlin và cộng sự, \emph{Head First Object-Oriented Analysis and Design: A Brain Friendly Guide to OOA\&D}}
+        \end{figure}
+    \end{columns}
+\end{frame}
 
 \end{document}

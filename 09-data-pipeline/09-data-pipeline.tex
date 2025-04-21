@@ -1,0 +1,459 @@
+\documentclass{beamer}
+
+% Vietnamese support
+\usepackage{fontenc}
+\usepackage{qrcode}
+
+\newcommand{\ul}[1]{\emph{#1}}
+
+% Beamer theme
+\usetheme{Berlin}
+
+\title{Thực hành phát triển hệ thống Trí tuệ nhân tạo\\
+Quản lý dữ liệu và pipeline xử lý dữ liệu
+}
+\author{Trần Quốc Long}
+\institute{Trường ĐH Công nghệ, ĐHQG Hà Nội}
+\date{\today}
+
+\begin{document}
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Mục lục}
+    \tableofcontents
+\end{frame}
+
+\section{Thu thập dữ liệu}
+
+\begin{frame}{Thu thập dữ liệu}
+    \begin{columns}
+        \column{0.1\textwidth}
+        \begin{figure}
+            \centering
+            % \includegraphics[width=0.8\textwidth]{../images/data-collection}
+        \end{figure}
+        \column{0.9\textwidth}
+        \begin{itemize}
+            \item Các phương pháp thu thập dữ liệu:
+            \begin{itemize}
+                \item Nguồn công khai: Kaggle, UCI Machine Learning Repository, \dots
+                \item API: Twitter API, Google Maps API, \dots
+                \item Web scraping: BeautifulSoup, Scrapy, \dots
+            \end{itemize}
+            \item Đảm bảo dữ liệu có tính hợp lệ và không bị nhiễu:
+            \begin{itemize}
+                \item Kiểm tra tính hợp lệ của dữ liệu
+                \item Loại bỏ dữ liệu nhiễu
+                \item Đảm bảo dữ liệu phù hợp với bài toán
+            \end{itemize}
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Dữ liệu hình ảnh}
+    \begin{itemize}
+        \item \textbf{Đặc điểm}: Dữ liệu thị giác, đa định dạng (JPEG, PNG, \dots)
+        \item \textbf{Thách thức}:
+        \begin{itemize}
+            \item Kích thước tệp lớn
+            \item Cần chú thích (ví dụ: gắn nhãn cho học có giám sát)
+            \item Khả năng thiên vị trong tập dữ liệu hình ảnh
+            \item Cân bằng tập dữ liệu cho các tác vụ phân loại
+        \end{itemize}
+        \item \textbf{Nguồn}: Tập dữ liệu công khai (ví dụ: ImageNet, COCO), web scraping, nội dung do người dùng tạo
+        \item \textbf{Công cụ}: OpenCV, Pillow để xử lý; công cụ chú thích như LabelImg
+        \item \textbf{Lưu ý}:
+        \begin{itemize}
+            \item Đảm bảo sự đa dạng trong tập dữ liệu để tránh thiên vị
+            \item Xử lý các độ phân giải và tỷ lệ khung hình khác nhau
+            \item Xem xét các kỹ thuật tăng cường dữ liệu
+            \item Cân bằng tập dữ liệu để tránh thiên vị lớp
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Dữ liệu văn bản}
+    \begin{itemize}
+        \item \textbf{Đặc điểm}: Ngôn ngữ tự nhiên, đa ngôn ngữ
+        \item \textbf{Thách thức}:
+        \begin{itemize}
+            % \item Xử lý dành riêng cho ngôn ngữ
+            \item Xử lý các mã hóa khác nhau
+            \item Xử lý văn bản không cấu trúc
+            \item Xử lý các ngôn ngữ khác nhau %và có thể cần dịch thuật
+        \end{itemize}
+        \item \textbf{Nguồn}: Web scraping, API (ví dụ: Twitter), tập dữ liệu công khai (ví dụ: Wikipedia dumps)
+        \item \textbf{Công cụ}: NLTK, spaCy cho các tác vụ NLP; BeautifulSoup cho web scraping
+        \item \textbf{Lưu ý}:
+        \begin{itemize}
+            \item Tiền xử lý văn bản (tokenization, stemming, \dots)
+            \item Xử lý các từ dừng (stop words)
+            \item Dịch ngôn ngữ nếu cần
+            \item Xử lý các phương ngữ hoặc biến thể ngôn ngữ
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Dữ liệu âm thanh}
+    \begin{itemize}
+        \item \textbf{Đặc điểm}: Dữ liệu chuỗi thời gian
+        \item \textbf{Thách thức}:
+        \begin{itemize}
+            \item Giảm nhiễu
+            \item Trích xuất đặc trưng
+            \item Xử lý các định dạng âm thanh khác nhau
+            \item Xử lý các giọng nói hoặc phương ngữ khác nhau
+        \end{itemize}
+        \item \textbf{Nguồn}: Tập dữ liệu công khai (ví dụ: LibriSpeech), ghi âm riêng, API
+        \item \textbf{Công cụ}: Librosa, PyDub để xử lý âm thanh; thư viện nhận dạng giọng nói
+        \item \textbf{Lưu ý}:
+        \begin{itemize}
+            \item Tốc độ lấy mẫu
+            \item Chất lượng âm thanh
+            \item Phiên âm cho dữ liệu giọng nói
+            \item Đa dạng hóa tập dữ liệu để bao gồm các giọng nói khác nhau
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Dữ liệu chuỗi thời gian}
+    \begin{itemize}
+        \item \textbf{Đặc điểm}: Có tính xu hướng, hoặc mùa vụ
+        \item \textbf{Thách thức}:
+        \begin{itemize}
+            \item Giá trị thiếu
+            \item Lấy mẫu không đều
+        \end{itemize}
+        \item \textbf{Nguồn}: Cảm biến, dữ liệu tài chính, dữ liệu thời tiết
+        \item \textbf{Công cụ}: Pandas, statsmodels để phân tích; Prophet để dự báo
+        \item \textbf{Lưu ý}:
+        \begin{itemize}
+            \item Xử lý dữ liệu thiếu
+            \item Kỹ thuật đặc trưng dựa trên thời gian
+            \item Lựa chọn mô hình cho dự báo chuỗi thời gian
+            \item Kiểm tra tính dừng
+            \item Biến đổi dữ liệu nếu cần
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Dữ liệu có cấu trúc}
+    \begin{itemize}
+        \item \textbf{Đặc điểm}: Tổ chức thành bảng, thường có schema cho trước
+        \item \textbf{Thách thức}:
+        \begin{itemize}
+            \item Làm sạch dữ liệu
+            \item Xử lý biến phân loại
+            \item Lựa chọn đặc trưng
+            \item Xử lý phân bố không cần bằng
+        \end{itemize}
+        \item \textbf{Nguồn}: Cơ sở dữ liệu, tệp CSV, API cung cấp dữ liệu dạng bảng
+        \item \textbf{Công cụ}: Pandas, SQL, Scikit-learn
+        \item \textbf{Lưu ý}:
+        \begin{itemize}
+            \item Xử lý giá trị thiếu
+            \item Mã hóa biến phân loại
+            \item Chuẩn hóa hoặc chia tỷ lệ các đặc trưng
+            \item Xử lý các lớp không cân bằng (ví dụ: oversampling, undersampling)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Xử lý dữ liệu}
+
+\begin{frame}{Xử lý dữ liệu}
+    \begin{columns}
+        \column{0.1\textwidth}
+        \begin{figure}
+            \centering
+            % \includegraphics[width=0.8\textwidth]{../images/data-processing}
+        \end{figure}
+        \column{0.9\textwidth}
+        \begin{itemize}
+            \item Làm sạch và chuẩn hóa dữ liệu:
+            \begin{itemize}
+                \item Loại bỏ dữ liệu trùng lặp
+                \item Chuẩn hóa định dạng dữ liệu
+                \item Chuyển đổi dữ liệu sang định dạng phù hợp
+            \end{itemize}
+            \item Xử lý dữ liệu mất giá trị và dữ liệu ngoại lai:
+            \begin{itemize}
+                \item Điền giá trị mất bằng trung bình, median, \dots
+                \item Loại bỏ hoặc xử lý dữ liệu ngoại lai
+                \item Sử dụng kỹ thuật interpolation
+            \end{itemize}
+            \item Chuẩn bị dữ liệu cho mô hình:
+            \begin{itemize}
+                \item Chia dữ liệu thành tập huấn luyện, kiểm thử, đánh giá
+                \item Chọn lựa đặc trưng
+                \item Biến đổi dữ liệu (scaling, normalization, \dots)
+            \end{itemize}
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Xử lý dữ liệu hình ảnh}
+    \begin{itemize}
+        \item Thay đổi kích thước hình ảnh thành kích thước tiêu chuẩn
+        \item Chuẩn hóa giá trị pixel (ví dụ: chia cho 255)
+        \item Tăng cường dữ liệu:
+        \begin{itemize}
+            \item Cắt, xoay, lật hình ảnh
+            \item Thay đổi độ sáng, độ tương phản
+        \end{itemize}
+        \item Chuyển đổi sang thang độ xám nếu cần
+        \item Áp dụng bộ lọc để giảm nhiễu
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Xử lý dữ liệu văn bản}
+    \begin{itemize}
+        \item Tokenization: chia văn bản thành các từ hoặc câu
+        \item Loại bỏ từ dừng (stop words)
+        \item Stemming hoặc lemmatization để đưa từ về dạng gốc
+        \item Chuyển đổi văn bản sang chữ thường
+        \item Vector hóa văn bản:
+        \begin{itemize}
+            \item Sử dụng TF-IDF
+            \item Sử dụng word embeddings (Word2Vec, GloVe)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Xử lý dữ liệu âm thanh}
+    \begin{itemize}
+        \item Chuyển đổi sang định dạng âm thanh tiêu chuẩn (ví dụ: WAV)
+        \item Resampling để có tần số lấy mẫu nhất quán
+        \item Trích xuất đặc trưng:
+        \begin{itemize}
+            \item MFCCs (Mel-frequency cepstral coefficients)
+            \item Spectrograms
+        \end{itemize}
+        \item Giảm nhiễu âm thanh
+        \item Chuẩn hóa biên độ
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Xử lý dữ liệu chuỗi thời gian}
+    \begin{itemize}
+        \item Xử lý giá trị thiếu:
+        \begin{itemize}
+            \item Nội suy (interpolation)
+            \item Điền giá trị bằng giá trị trước đó (forward fill)
+        \end{itemize}
+        \item Xử lý lấy mẫu không đều:
+        \begin{itemize}
+            \item Resampling thành tần suất cố định
+        \end{itemize}
+        \item Loại bỏ xu hướng và tính mùa vụ nếu cần
+        \item Tạo đặc trưng:
+        \begin{itemize}
+            \item Đặc trưng trễ (lag features)
+            \item Thống kê cửa sổ trượt (rolling statistics)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Xử lý dữ liệu có cấu trúc}
+    \begin{itemize}
+        \item Xử lý giá trị thiếu:
+        \begin{itemize}
+            \item Điền bằng giá trị trung bình, median, mode
+            \item Sử dụng mô hình dự đoán để điền giá trị thiếu
+        \end{itemize}
+        \item Mã hóa biến phân loại:
+        \begin{itemize}
+            \item One-hot encoding
+            \item Label encoding
+        \end{itemize}
+        \item Chuẩn hóa hoặc chia tỷ lệ các đặc trưng số:
+        \begin{itemize}
+            \item Min-max scaling
+            \item Standardization (z-score)
+        \end{itemize}
+        \item Phát hiện và xử lý dữ liệu ngoại lai
+    \end{itemize}
+\end{frame}
+
+\section{Quản lý pipeline xử lý dữ liệu}
+
+\begin{frame}{Quản lý pipeline xử lý dữ liệu}
+    \begin{columns}
+        \column{0.1\textwidth}
+        \begin{figure}
+            \centering
+            % \includegraphics[width=0.8\textwidth]{../images/pipeline}
+        \end{figure}
+        \column{0.9\textwidth}
+        \begin{itemize}
+            \item Sử dụng Data Version Control (DVC):
+            \begin{itemize}
+                \item Quản lý phiên bản dữ liệu
+                \item Theo dõi thay đổi trong dữ liệu
+                \item Chia sẻ dữ liệu giữa các thành viên
+            \end{itemize}
+            \item Khái niệm ETL trong MLOps:
+            \begin{itemize}
+                \item Extract: Thu thập dữ liệu từ các nguồn
+                \item Transform: Xử lý dữ liệu cho mô hình
+                \item Load: Lưu trữ dữ liệu đã xử lý
+            \end{itemize}
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Data Version Control (DVC) là gì?}
+    \begin{itemize}
+        \item \textbf{DVC}
+        \begin{itemize}
+            \item Một công cụ quản lý phiên bản dữ liệu.
+            \item Tương tự Git nhưng dành cho dữ liệu và mô hình.
+        \end{itemize}
+        \item \textbf{Mục đích}:
+        \begin{itemize}
+            \item Theo dõi và quản lý các phiên bản dữ liệu.
+            \item Đảm bảo tính nhất quán và khả năng tái lập.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Tại sao cần DVC?}
+    \begin{itemize}
+        \item \textbf{Thách thức với dữ liệu lớn}:
+        \begin{itemize}
+            \item Dữ liệu lớn không thể quản lý bằng Git thông thường.
+            \item Cần công cụ chuyên biệt để xử lý dữ liệu lớn.
+        \end{itemize}
+        \item \textbf{Lợi ích của DVC}:
+        \begin{itemize}
+            \item Quản lý phiên bản dữ liệu dễ dàng.
+            \item Theo dõi thay đổi trong dữ liệu.
+            \item Chia sẻ dữ liệu giữa các thành viên nhóm.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Cách hoạt động của DVC}
+    \begin{itemize}
+        \item \textbf{Cơ chế hoạt động}:
+        \begin{itemize}
+            \item DVC lưu trữ dữ liệu trong bộ nhớ cache.
+            \item Sử dụng file .dvc để theo dõi phiên bản.
+            \item Liên kết với Git để quản lý mã và dữ liệu.
+        \end{itemize}
+        \item \textbf{Các lệnh cơ bản}:
+        \begin{itemize}
+            \item \texttt{dvc init}: Khởi tạo DVC.
+            \item \texttt{dvc add}: Thêm dữ liệu vào DVC.
+            \item \texttt{dvc push}: Đẩy dữ liệu lên remote.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lợi ích của DVC trong MLOps}
+    \begin{itemize}
+        \item \textbf{Tái lập thí nghiệm}: Dễ dàng khôi phục dữ liệu cũ.
+        \item \textbf{Hợp tác nhóm}: Chia sẻ dữ liệu và mô hình dễ dàng.
+        \item \textbf{Quản lý pipeline}: Tích hợp với pipeline xử lý dữ liệu.
+        \item \textbf{Tiết kiệm không gian}: Không lưu trữ dữ liệu trong Git.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{ETL là gì?}
+    \begin{itemize}
+        \item \textbf{ETL} là viết tắt của:
+        \begin{itemize}
+            \item \textbf{Extract}: Thu thập dữ liệu từ các nguồn khác nhau.
+            \item \textbf{Transform}: Xử lý và chuyển đổi dữ liệu thành định dạng phù hợp.
+            \item \textbf{Load}: Tải dữ liệu đã xử lý vào hệ thống đích.
+        \end{itemize}
+        \item \textbf{Mục đích}: Chuẩn bị dữ liệu cho các ứng dụng phân tích, báo cáo, hoặc học máy.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Extract: Thu thập dữ liệu}
+    \begin{itemize}
+        \item \textbf{Nguồn dữ liệu}:
+        \begin{itemize}
+            \item Cơ sở dữ liệu (SQL, NoSQL)
+            \item Tệp tin (CSV, JSON, XML)
+            \item API (REST, SOAP)
+            \item Web scraping
+        \end{itemize}
+        \item \textbf{Phương pháp}:
+        \begin{itemize}
+            \item Batch processing: Thu thập dữ liệu theo lô.
+            \item Real-time processing: Thu thập dữ liệu theo thời gian thực.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Transform: Xử lý dữ liệu}
+    \begin{itemize}
+        \item \textbf{Kỹ thuật xử lý}:
+        \begin{itemize}
+            \item Làm sạch dữ liệu: Loại bỏ dữ liệu trùng lặp, xử lý giá trị thiếu.
+            \item Chuẩn hóa: Đưa dữ liệu về định dạng thống nhất.
+            \item Biến đổi: Tính toán các đặc trưng mới, mã hóa biến phân loại.
+            \item Kết hợp: Ghép nối dữ liệu từ nhiều nguồn.
+        \end{itemize}
+        \item \textbf{Công cụ}: Python (Pandas, NumPy), SQL, Apache Spark.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Load: Tải dữ liệu}
+    \begin{itemize}
+        \item \textbf{Hệ thống đích}:
+        \begin{itemize}
+            \item Kho dữ liệu (Data Warehouse)
+            \item Hồ dữ liệu (Data Lake)
+            \item Cơ sở dữ liệu phân tích
+            \item Hệ thống học máy
+        \end{itemize}
+        \item \textbf{Phương pháp}:
+        \begin{itemize}
+            \item Batch loading: Tải dữ liệu theo lô.
+            \item Incremental loading: Tải dữ liệu mới hoặc cập nhật.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{ETL trong MLOps}
+    \begin{itemize}
+        \item \textbf{Vai trò}:
+        \begin{itemize}
+            \item Cung cấp dữ liệu chất lượng cao cho huấn luyện mô hình.
+            \item Đảm bảo tính nhất quán và khả năng tái lập.
+            \item Tự động hóa quy trình xử lý dữ liệu.
+        \end{itemize}
+        \item \textbf{Lợi ích}:
+        \begin{itemize}
+            \item Tiết kiệm thời gian và công sức.
+            \item Giảm thiểu lỗi thủ công.
+            \item Dễ dàng mở rộng cho các tập dữ liệu lớn.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Ví dụ ETL và DVC cho dữ liệu hình ảnh}
+    \begin{itemize}
+        \item \textbf{Extract}: Thu thập hình ảnh từ Flickr API.
+        \item \textbf{Transform}:
+        \begin{itemize}
+            \item Resize hình ảnh về kích thước 256x256.
+            \item Chuẩn hóa giá trị pixel từ 0 đến 1.
+            \item Áp dụng tăng cường dữ liệu: xoay, lật.
+        \end{itemize}
+        \item \textbf{Load}: Lưu trữ hình ảnh đã xử lý vào Amazon S3.
+        \item \textbf{DVC}:
+        \begin{itemize}
+            \item Sử dụng \texttt{dvc add} để theo dõi dữ liệu hình ảnh.
+            \item Commit thay đổi với Git và đẩy dữ liệu lên remote với \texttt{dvc push}.
+            \item Quản lý các phiên bản khác nhau của dữ liệu hình ảnh.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\end{document}

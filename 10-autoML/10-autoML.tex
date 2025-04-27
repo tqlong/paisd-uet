@@ -1,0 +1,394 @@
+\documentclass{beamer}
+
+% Vietnamese support
+\usepackage{fontenc}
+
+% \documentclass{beamer}
+% \usetheme{Berlin}
+% \usepackage[utf8]{inputenc}
+% \usepackage[T5]{fontenc}
+% \usepackage[vietnamese]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\usetheme{Berlin}
+
+\title{Thực hành phát triển hệ thống Trí tuệ nhân tạo\\
+Huấn luyện mô hình tự động
+}
+\author{Trần Quốc Long}
+\institute{Trường ĐH Công nghệ, ĐHQG Hà Nội}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}{Nội dung chính}
+    \tableofcontents
+\end{frame}
+
+\section{Quản lý cấu hình mô hình}
+
+\begin{frame}{Vai trò của quản lý cấu hình}
+    \begin{itemize}
+        \item \textbf{Tách biệt cấu hình khỏi mã nguồn:} Lưu các tham số mô hình, siêu tham số, đường dẫn dữ liệu... trong file cấu hình (YAML, JSON, v.v.) thay vì viết cứng trong code.
+        \item \textbf{Dễ dàng thử nghiệm và tái hiện:} Cho phép thay đổi tham số nhanh chóng cho các thí nghiệm khác nhau mà không cần sửa code. Mỗi cấu hình có thể lưu lại để tái hiện kết quả sau này.
+        \item \textbf{Quản lý phiên bản:} Cấu hình được quản lý có hệ thống giúp so sánh các phiên bản mô hình và đảm bảo tính nhất quán giữa các lần chạy.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Hydra: Cấu hình động}
+    \begin{itemize}
+        \item \textbf{Hydra} là một thư viện mã nguồn mở do Facebook AI phát triển, hỗ trợ quản lý cấu hình linh hoạt trong Python.
+        \item Cho phép tạo cấu hình động bằng cách kết hợp nhiều file cấu hình và ghi đè tham số từ dòng lệnh. Ví dụ: có thể định nghĩa nhiều cấu hình cho mô hình, dữ liệu, huấn luyện và chọn lựa chúng khi chạy.
+        \item Hydra sử dụng \textbf{OmegaConf} để biểu diễn cấu hình dưới dạng cây (hierarchy). Nhờ đó, cấu hình được tổ chức rõ ràng và dễ dàng tùy biến cho các kịch bản thí nghiệm khác nhau.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Ví dụ: Sử dụng Hydra để quản lý cấu hình}
+
+\begin{verbatim}
+# config.yaml
+database:
+  host: localhost
+  port: 3306
+# file my_app.py
+import hydra
+from omegaconf import DictConfig
+
+@hydra.main(config_name="config")
+def my_app(cfg: DictConfig):
+    print(cfg)
+
+if __name__ == "__main__":
+    my_app()
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Lưu ý về quản lý cấu hình}
+    \begin{itemize}
+        \item Sử dụng cấu hình mặc định và cấu trúc phân cấp: tách riêng cấu hình cho mô hình, dữ liệu, huấn luyện, v.v. và kết hợp chúng linh hoạt (như Hydra \textit{defaults}).
+        \item \textbf{Không hard-code:} Tránh gán cố định các tham số trong code; luôn đọc giá trị từ file cấu hình hoặc biến môi trường.
+        \item \textbf{Ghi lại cấu hình cho mỗi thí nghiệm:} Lưu trữ file cấu hình (hoặc snapshot) kèm theo kết quả mô hình để có thể tái hiện và phân tích về sau.
+        \item Kiểm soát phiên bản: Sử dụng hệ thống quản lý phiên bản (Git) cho các file cấu hình, giúp theo dõi sự thay đổi tham số qua thời gian.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Khởi tạo đối tượng với Hydra}
+    \begin{itemize}
+        \item Hydra hỗ trợ \textbf{khởi tạo động đối tượng} từ file cấu hình bằng \texttt{hydra.utils.instantiate}.
+        \item Thay vì viết code khởi tạo thủ công, ta định nghĩa các tham số cần thiết trong file YAML.
+        \item Hydra sẽ tự động đọc loại class cần khởi tạo và các tham số tương ứng.
+        \item Ứng dụng: Khởi tạo mô hình (Model), bộ tối ưu hóa (Optimizer), hàm mất mát (Loss Function) một cách tự động.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Ví dụ: Khởi tạo mô hình và optimizer với Hydra}
+    \begin{verbatim}
+    # config.yaml
+    model:
+      _target_: torch.nn.Linear
+      in_features: 10
+      out_features: 2
+    
+    optimizer:
+      _target_: torch.optim.Adam
+      lr: 0.001
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Ví dụ: Khởi tạo mô hình và optimizer với Hydra}
+    \begin{verbatim}
+    # main.py
+    import hydra
+    from hydra.utils import instantiate
+    
+    @hydra.main(config_name="config")
+    def main(cfg):
+        model = instantiate(cfg.model)
+        optimizer = instantiate(cfg.optimizer, params=model.parameters())
+        print(model)
+        print(optimizer)
+    
+    if __name__ == "__main__":
+        main()
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Các thành phần chính trong file cấu hình Hydra}
+    \begin{itemize}
+        \item \textbf{\_target\_}: Đường dẫn đến class hoặc function cần khởi tạo.
+        \item \textbf{Tham số cấu hình}: Các tham số được truyền vào constructor khi instantiate.
+        \item \textbf{Defaults list}: Cho phép kết hợp nhiều file cấu hình theo thứ tự ưu tiên.
+    \end{itemize}
+    \pause
+    \textbf{Ví dụ đơn giản:}
+    \begin{verbatim}
+    defaults:
+      - optimizer: adam
+    
+    optimizer:
+      _target_: torch.optim.Adam
+      lr: 0.001
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Chồng cấu hình từ dòng lệnh (Override Config)}
+    \begin{itemize}
+        \item Hydra cho phép ghi đè bất kỳ tham số nào trong file YAML từ dòng lệnh.
+        \item Rất tiện lợi khi cần thử nghiệm nhanh mà không cần sửa file config.
+    \end{itemize}
+    % \pause
+    \textbf{Ví dụ:}
+    \begin{verbatim}
+    python train.py optimizer.lr=0.0005 model.hidden_dim=128
+    \end{verbatim}
+    % \pause
+    \textbf{Ưu điểm:}
+    \begin{itemize}
+        \item Tiết kiệm thời gian chỉnh sửa.
+        \item Tự động lưu lại tham số override để tái hiện sau này.
+    \end{itemize}
+\end{frame}
+    
+    
+% \begin{frame}{Tóm tắt - Quản lý cấu hình}
+%     \begin{itemize}
+%         \item Quản lý cấu hình mô hình giúp tách biệt tham số khỏi code, tạo điều kiện cho thí nghiệm linh hoạt và đảm bảo khả năng tái hiện kết quả.
+%         \item Hydra cung cấp cách tiếp cận linh hoạt để tổ chức và ghi đè cấu hình, phù hợp cho các dự án ML phức tạp.
+%         \item Áp dụng các thực hành tốt (cấu hình mặc định, không hard-code, quản lý phiên bản) giúp duy trì tính nhất quán và giảm thiểu sai sót khi phát triển mô hình.
+%     \end{itemize}
+% \end{frame}
+
+\section{Theo dõi và quản lý thí nghiệm}
+
+\begin{frame}{Vai trò của theo dõi thí nghiệm}
+    \begin{itemize}
+        \item Trong quá trình phát triển mô hình, việc \textbf{ghi lại thông tin thí nghiệm} (tham số, kiến trúc, kết quả) là cần thiết để so sánh và tái hiện các kết quả sau này.
+        \item Khi số lượng thí nghiệm tăng, cần một cách \textbf{quản lý có hệ thống}: tránh nhầm lẫn giữa các lần chạy, biết được mô hình nào đang cho kết quả tốt hơn và lý do tại sao.
+        \item Các công cụ theo dõi thí nghiệm (như MLflow, Weights \& Biases) cho phép tự động lưu trữ tham số, kết quả, cũng như cung cấp giao diện trực quan để phân tích các lần chạy mô hình.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{MLflow - Nền tảng quản lý thí nghiệm}
+    \begin{itemize}
+        \item \textbf{MLflow} là một nền tảng mã nguồn mở hỗ trợ toàn bộ vòng đời ML, trong đó có chức năng theo dõi thí nghiệm (\textit{tracking}).
+        \item MLflow cho phép \textbf{log tham số, metric và artifact} (như mô hình đã huấn luyện, hình ảnh kết quả) cho mỗi lần chạy mô hình một cách tự động thông qua API.
+        \item Cung cấp giao diện web để \textbf{xem và so sánh kết quả} giữa các lần chạy: người dùng có thể lọc các thí nghiệm theo tham số, xem biểu đồ các chỉ số (loss, accuracy theo epoch, v.v.).
+        \item Hỗ trợ \textbf{Model Registry}: lưu phiên bản các mô hình tốt nhất và triển khai chúng dễ dàng (ngoài phạm vi theo dõi thí nghiệm cơ bản).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Ví dụ: Sử dụng MLflow để log thí nghiệm}
+\begin{verbatim}
+import mlflow
+
+mlflow.set_experiment("thu-nghiem-phan-loai")
+with mlflow.start_run():
+    mlflow.log_param("model", "RandomForest")
+    mlflow.log_param("n_estimators", 100)
+    mlflow.log_metric("accuracy", 0.92)
+    mlflow.log_artifact("model.pkl")
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Lưu checkpoint mô hình trong MLflow}
+    \begin{itemize}
+        \item MLflow cho phép lưu mô hình đã huấn luyện dưới dạng artifact.
+        \item Hỗ trợ lưu nhiều loại mô hình: PyTorch, Sklearn, XGBoost, LightGBM,...
+        \item Việc lưu mô hình giúp:
+        \begin{itemize}
+            \item Tái sử dụng mô hình để triển khai (deployment).
+            \item Tải lại mô hình để tiếp tục huấn luyện hoặc phân tích thêm.
+        \end{itemize}
+        \item Các lệnh phổ biến: \texttt{mlflow.pytorch.log\_model}, \texttt{mlflow.sklearn.log\_model}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Ví dụ: Lưu mô hình PyTorch vào MLflow}
+    \begin{verbatim}
+    import mlflow.pytorch
+    import torch.nn as nn
+    
+    model = nn.Linear(10, 2)
+    # Huấn luyện mô hình...
+    
+    with mlflow.start_run():
+        mlflow.pytorch.log_model(model, "model_checkpoint")
+        mlflow.log_param("optimizer", "Adam")
+        mlflow.log_metric("final_loss", 0.02)
+    \end{verbatim}
+\end{frame}
+    
+\begin{frame}{Các thành phần chính trong MLflow Tracking}
+    \begin{itemize}
+        \item \textbf{Experiment:} Tập hợp các lần chạy (runs) cùng nhóm thí nghiệm.
+        \item \textbf{Run:} Một lần chạy riêng biệt, chứa tham số, chỉ số và artifact.
+        \item \textbf{Parameters:} Các siêu tham số như learning rate, batch size...
+        \item \textbf{Metrics:} Các chỉ số đánh giá như loss, accuracy...
+        \item \textbf{Artifacts:} Các file lưu trữ: model, checkpoint, hình ảnh...
+    \end{itemize}
+\end{frame}
+    
+\begin{frame}{Weights \& Biases (W\&B)}
+    \begin{itemize}
+        \item \textbf{W\&B} là một nền tảng đám mây phổ biến cho phép theo dõi và trực quan hóa quá trình huấn luyện mô hình theo thời gian thực.
+        \item Cung cấp \textbf{dashboard trực quan}: vẽ biểu đồ loss, accuracy, v.v. theo epoch; so sánh hiệu năng giữa các lần chạy; lưu lịch sử các mô hình.
+        \item Dễ dàng tích hợp: chỉ cần thêm một vài lệnh \texttt{wandb} trong code là có thể bắt đầu log tham số, chỉ số. W\&B tự động đồng bộ dữ liệu lên đám mây và tạo báo cáo.
+        \item Cho phép \textbf{cộng tác} trong nhóm: các thành viên cùng xem được kết quả, bình luận và chia sẻ các biểu đồ, giúp dự án ML có tính tương tác cao.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Ví dụ: Sử dụng W\&B để theo dõi huấn luyện}
+\begin{verbatim}
+import wandb
+
+wandb.init(project="thu-nghiem-phan-loai")
+wandb.config.learning_rate = 0.01
+for epoch in range(1, 6):
+    loss = 0.1 * epoch
+    acc = 0.9 - 0.02 * epoch
+    wandb.log({"epoch": epoch, "loss": loss, "accuracy": acc})
+wandb.finish()
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Lưu mô hình tự động với Weights \& Biases Artifacts}
+    \begin{itemize}
+        \item Artifacts trong W\&B giúp lưu trữ mô hình, tập dữ liệu, file output một cách có tổ chức.
+        \item Quá trình sử dụng:
+        \begin{enumerate}
+            \item Tạo artifact (\texttt{wandb.Artifact}).
+            \item Thêm file vào artifact.
+            \item Ghi artifact vào run hiện tại (\texttt{wandb.log\_artifact}).
+        \end{enumerate}
+        \item Hỗ trợ versioning cho artifact: biết mô hình nào huấn luyện từ dataset nào.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{So sánh MLflow và Weights \& Biases}
+    \begin{itemize}
+        \item \textbf{MLflow:}
+        \begin{itemize}
+            \item Mã nguồn mở, dễ host nội bộ.
+            \item Giao diện trực quan đơn giản.
+            \item Phù hợp nếu cần kiểm soát dữ liệu tuyệt đối.
+        \end{itemize}
+        % \pause
+        \item \textbf{Weights \& Biases (W\&B):}
+        \begin{itemize}
+            \item Lưu trữ trên cloud, hỗ trợ cộng tác nhóm tốt.
+            \item Dashboard đẹp, trực quan hóa mạnh mẽ.
+            \item Tích hợp thêm tính năng Artifact Management, Sweep Tuning.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+    
+% \begin{frame}{Tóm tắt - Theo dõi thí nghiệm}
+%     \begin{itemize}
+%         \item Theo dõi thí nghiệm giúp lưu giữ toàn bộ thông tin (cấu hình, kết quả) của mỗi lần chạy mô hình, tạo cơ sở để so sánh và tái hiện dễ dàng.
+%         \item MLflow và W\&B là hai công cụ phổ biến hỗ trợ tự động hóa việc log tham số, chỉ số và cung cấp giao diện để trực quan hóa, so sánh các thí nghiệm.
+%         \item Việc ứng dụng các công cụ này giúp nhà phát triển quản lý dự án ML hiệu quả hơn, tập trung vào cải thiện mô hình thay vì xử lý thủ công dữ liệu thí nghiệm.
+%     \end{itemize}
+% \end{frame}
+
+\section{Tối ưu hóa mô hình}
+
+\begin{frame}{Thuật toán tối ưu hóa trong huấn luyện}
+    \begin{itemize}
+        \item \textbf{Tối ưu tham số mô hình:} Sử dụng các phương pháp dựa trên đạo hàm để điều chỉnh trọng số mô hình, ví dụ thuật toán Gradient Descent (giảm dần theo gradient) với các biến thể như Stochastic GD (SGD) và Mini-batch GD.
+        \item \textbf{Các phương pháp tối ưu hiện đại:} Nhiều cải tiến giúp tăng tốc độ hội tụ: Momentum (thêm quán tính cho SGD), AdaGrad và RMSProp (điều chỉnh tốc độ học theo từng tham số), Adam (kết hợp Momentum và RMSProp)...
+        \item \textbf{Lựa chọn thuật toán phù hợp:} Chọn đúng thuật toán tối ưu (và siêu tham số của nó, như learning rate) giúp mô hình hội tụ nhanh hơn và đạt kết quả tổng quát tốt hơn.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Điều chỉnh siêu tham số (Hyperparameter Tuning)}
+    \begin{itemize}
+        \item \textbf{Grid Search (Tìm kiếm lưới):} Thử tuần tự tất cả các kết hợp có thể của tập siêu tham số. Phương pháp này đơn giản nhưng chi phí tính toán lớn khi số lượng tham số nhiều.
+        \item \textbf{Random Search (Tìm kiếm ngẫu nhiên):} Thử ngẫu nhiên một số cấu hình. Thực tế cho thấy Random Search có thể tìm được cấu hình tốt nhanh hơn Grid Search trong nhiều trường hợp, đặc biệt khi chỉ một vài tham số thực sự quan trọng.
+        \item \textbf{Bayesian Optimization (Tối ưu hóa Bayes):} Sử dụng mô hình xác suất (ví dụ: Gaussian Process) dự đoán kết quả từ những thử nghiệm đã thực hiện, từ đó chọn các bộ siêu tham số tiếp theo một cách thông minh. Giúp tìm cực trị với ít lần thử hơn.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Các siêu tham số thường cần tối ưu}
+    \begin{itemize}
+        \item \textbf{Learning Rate (lr)}
+        \item \textbf{Batch Size}
+        \item \textbf{Số lớp ẩn (Hidden Layers)}
+        \item \textbf{Số neuron mỗi lớp (Hidden Units)}
+        \item \textbf{Dropout Rate}
+        \item \textbf{Weight Decay (Regularization)}
+    \end{itemize}
+
+\end{frame}
+    
+\begin{frame}{So sánh Grid Search và Random Search}
+    \begin{itemize}
+        \item \textbf{Grid Search:}
+        \begin{itemize}
+            \item Thử nghiệm toàn bộ các tổ hợp siêu tham số.
+            \item Tốn nhiều tài nguyên nếu không gian tham số lớn.
+        \end{itemize}
+        \item \textbf{Random Search:}
+        \begin{itemize}
+            \item Thử nghiệm ngẫu nhiên một số lượng tổ hợp giới hạn.
+            \item Tìm được kết quả tốt nhanh hơn trong thực tế.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+    
+\begin{frame}{Quy trình Bayesian Optimization}
+    \begin{enumerate}
+        \item \textbf{Khởi tạo:} Thử nghiệm một số bộ siêu tham số ban đầu.
+        \item \textbf{Xây mô hình dự đoán:} Ước lượng hàm mục tiêu (ví dụ: loss theo tham số).
+        \item \textbf{Chọn điểm mới:} Chọn bộ tham số mới có khả năng cải thiện dựa trên mô hình dự đoán.
+        \item \textbf{Cập nhật:} Huấn luyện với bộ tham số mới, cập nhật mô hình dự đoán.
+        \item \textbf{Lặp:} Tiếp tục cho đến khi đạt đủ số lần thử hoặc đạt ngưỡng chất lượng mong muốn.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Các chiến lược chọn điểm mới trong Bayesian Optimization}
+    \begin{itemize}
+        \item \textbf{Expected Improvement (EI):} Chọn điểm kỳ vọng cải thiện nhiều nhất.
+        \item \textbf{Probability of Improvement (PI):} Chọn điểm có xác suất cải thiện cao nhất.
+        \item \textbf{Upper Confidence Bound (UCB):} Cân bằng giữa khám phá (exploration) và khai thác (exploitation).
+    \end{itemize}
+    % \pause
+    \textbf{Ý tưởng chung:} Khai thác thông tin từ mô hình dự đoán để tìm bộ siêu tham số tốt hơn nhanh chóng!
+\end{frame}
+    
+\begin{frame}{Kỹ thuật huấn luyện nâng cao}
+    \begin{itemize}
+        \item \textbf{Early Stopping (Dừng sớm):} Dừng huấn luyện trước khi mô hình bị overfit - cụ thể khi chỉ số trên tập validation không còn được cải thiện. Kỹ thuật này giúp tránh overfitting và tiết kiệm thời gian huấn luyện.
+        \item \textbf{Cross-Validation (Kiểm thử chéo):} Chia dữ liệu thành $k$ phần (folds) và huấn luyện $k$ lần; mỗi lần luân phiên dùng một phần làm tập kiểm định (validation) và $k-1$ phần làm tập huấn luyện. Phương pháp này giúp đánh giá mô hình một cách đáng tin cậy trên nhiều phân chia dữ liệu.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Đánh giá hiệu suất mô hình}
+    \begin{itemize}
+        \item \textbf{Accuracy (Độ chính xác):} Tỷ lệ dự đoán đúng trên tổng số dự đoán. $$Accuracy = \frac{\text{số dự đoán đúng}}{\text{tổng số trường hợp}}.$$
+        \item \textbf{F1-score:} Trung bình điều hòa của Precision và Recall, dùng để đánh giá hiệu quả mô hình phân loại (đặc biệt trong trường hợp dữ liệu mất cân bằng). $$F1 = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}.$$
+        \item \textbf{AUC (Area Under Curve):} Diện tích dưới đường cong ROC. AUC cho biết khả năng mô hình phân biệt giữa các lớp: giá trị 1.0 là hoàn hảo, 0.5 tương đương đoán ngẫu nhiên. AUC càng cao, mô hình càng phân loại tốt.
+    \end{itemize}
+\end{frame}
+
+% \begin{frame}{Tóm tắt - Tối ưu hóa mô hình}
+%     \begin{itemize}
+%         \item Tối ưu hóa mô hình bao gồm quá trình huấn luyện trọng số (qua các thuật toán tối ưu) và tinh chỉnh siêu tham số/cấu trúc để mô hình đạt hiệu quả tốt nhất trên dữ liệu chưa thấy.
+%         \item Các phương pháp điều chỉnh siêu tham số (Grid Search, Random Search, Bayesian Optimization) giúp tự động hóa việc tìm kiếm cấu hình mô hình tối ưu một cách có hệ thống.
+%         \item Việc áp dụng kỹ thuật như Early Stopping và Cross-Validation giúp mô hình tổng quát tốt hơn, tránh overfitting; đồng thời lựa chọn chỉ số đánh giá phù hợp (Accuracy, F1, AUC...) giúp đo lường hiệu suất chính xác hơn.
+%     \end{itemize}
+% \end{frame}
+
+\begin{frame}{Kết luận}
+    \begin{itemize}
+        \item Quản lý cấu hình và theo dõi thí nghiệm là chìa khóa giúp quá trình huấn luyện mô hình có tổ chức và tái hiện được. Sử dụng các công cụ như Hydra, MLflow, W\&B giúp tự động hóa và đơn giản hóa những công việc này.
+        \item Tối ưu hóa mô hình đòi hỏi lựa chọn thuật toán huấn luyện phù hợp, tinh chỉnh siêu tham số một cách hệ thống (Grid/Random Search, Bayesian) và áp dụng các kỹ thuật như Early Stopping, Cross-Validation để tránh overfitting.
+        \item Đánh giá mô hình bằng các chỉ số phù hợp (Accuracy, F1-score, AUC, ...) giúp hiểu rõ chất lượng của mô hình trên các khía cạnh khác nhau, từ đó lựa chọn mô hình tối ưu cho bài toán.
+    \end{itemize}
+\end{frame}
+
+\end{document}

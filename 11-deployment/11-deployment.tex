@@ -1,0 +1,489 @@
+\documentclass{beamer}
+
+% Vietnamese support
+\usepackage{fontenc}
+
+% \documentclass{beamer}
+% \usetheme{Berlin}
+% \usepackage[utf8]{inputenc}
+% \usepackage[T5]{fontenc}
+% \usepackage[vietnamese]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\usetheme{Berlin}
+
+\title{Thực hành phát triển hệ thống Trí tuệ nhân tạo\\
+Triển khai mô hình AI
+}
+\author{Trần Quốc Long}
+\institute{Trường ĐH Công nghệ, ĐHQG Hà Nội}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}{Nội dung chính}
+    \tableofcontents
+\end{frame}
+
+\section{Các chiến lược triển khai mô hình AI}
+
+\begin{frame}{Các chiến lược triển khai mô hình AI}
+    \begin{itemize}
+        \item \textbf{Batch Inference}:
+        \begin{itemize}
+            \item Xử lý dữ liệu theo lô lớn, phù hợp với các tác vụ không yêu cầu phản hồi ngay lập tức.
+            \item Ví dụ: Dự đoán xu hướng thị trường hàng ngày.
+        \end{itemize}
+        \item \textbf{Online Inference}:
+        \begin{itemize}
+            \item Dự đoán theo thời gian thực, phản hồi ngay lập tức cho từng yêu cầu.
+            \item Ví dụ: Gợi ý sản phẩm khi người dùng duyệt web.
+        \end{itemize}
+        \item \textbf{Streaming Inference}:
+        \begin{itemize}
+            \item Xử lý dữ liệu liên tục từ các luồng dữ liệu thời gian thực.
+            \item Ví dụ: Phát hiện gian lận trong giao dịch tài chính trực tuyến.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Khi nào nên sử dụng Batch Inference?}
+    \begin{itemize}
+        \item \textbf{Trường hợp sử dụng:}
+        \begin{itemize}
+            \item Dự đoán số lượng lớn dữ liệu không yêu cầu phản hồi ngay lập tức.
+            \item Phân tích dữ liệu lịch sử, dự đoán xu hướng.
+        \end{itemize}
+        \item \textbf{Ưu điểm:}
+        \begin{itemize}
+            \item Tối ưu tài nguyên tính toán bằng cách xử lý theo lô.
+            \item Dễ dàng lên lịch và quản lý công việc.
+        \end{itemize}
+        \item \textbf{Lưu ý:}
+        \begin{itemize}
+            \item Không phù hợp với các ứng dụng yêu cầu thời gian phản hồi nhanh.
+            \item Cần thiết lập hệ thống lưu trữ và truy xuất kết quả hiệu quả.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Kiến trúc triển khai Batch Inference}
+    \begin{itemize}
+        \item \textbf{Thành phần chính:}
+        \begin{itemize}
+            \item Hệ thống lưu trữ dữ liệu đầu vào (Data Lake, Database).
+            \item Pipeline xử lý dữ liệu và thực hiện suy luận (ETL, ML Pipeline).
+            \item Hệ thống lưu trữ kết quả (Data Warehouse, Reporting Tools).
+        \end{itemize}
+        \item \textbf{Công cụ hỗ trợ:}
+        \begin{itemize}
+            \item Apache Spark, Hadoop cho xử lý dữ liệu lớn.
+            \item Airflow, Luigi cho quản lý workflow.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Khi nào nên sử dụng Online Inference?}
+    \begin{itemize}
+        \item \textbf{Trường hợp sử dụng:}
+        \begin{itemize}
+            \item Ứng dụng yêu cầu phản hồi gần như tức thì: chatbot, đề xuất sản phẩm, kiểm tra gian lận.
+        \end{itemize}
+        \item \textbf{Ưu điểm:}
+        \begin{itemize}
+            \item Cung cấp trải nghiệm người dùng tốt với phản hồi nhanh.
+            \item Dễ dàng tích hợp vào hệ thống hiện tại qua API.
+        \end{itemize}
+        \item \textbf{Lưu ý:}
+        \begin{itemize}
+            \item Cần đảm bảo độ trễ thấp và khả năng mở rộng.
+            \item Phải thiết kế hệ thống chịu lỗi và giám sát hiệu suất liên tục.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+    
+\begin{frame}{Kiến trúc triển khai Online Inference}
+    \begin{itemize}
+        \item \textbf{Thành phần chính:}
+        \begin{itemize}
+            \item API Gateway để nhận yêu cầu từ người dùng.
+            \item Service xử lý suy luận (Flask, FastAPI, gRPC).
+            \item Hệ thống cân bằng tải và tự động mở rộng (Kubernetes, Docker).
+        \end{itemize}
+        \item \textbf{Công cụ hỗ trợ:}
+        \begin{itemize}
+            \item TensorFlow Serving, TorchServe cho triển khai mô hình.
+            \item Prometheus, Grafana cho giám sát và cảnh báo.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Khi nào nên sử dụng Streaming Inference?}
+    \begin{itemize}
+        \item \textbf{Trường hợp sử dụng:}
+        \begin{itemize}
+            \item Xử lý dữ liệu liên tục từ các nguồn như cảm biến IoT, log hệ thống.
+            \item Phát hiện bất thường, phân tích hành vi thời gian thực.
+        \end{itemize}
+        \item \textbf{Ưu điểm:}
+        \begin{itemize}
+            \item Phản ứng nhanh với dữ liệu mới.
+            \item Phù hợp với hệ thống yêu cầu cập nhật liên tục.
+        \end{itemize}
+        \item \textbf{Lưu ý:}
+        \begin{itemize}
+            \item Cần thiết kế hệ thống có khả năng xử lý dữ liệu liên tục và ổn định.
+            \item Đảm bảo tính nhất quán và độ trễ thấp trong quá trình xử lý.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Kiến trúc triển khai Streaming Inference}
+    \begin{itemize}
+        \item \textbf{Thành phần chính:}
+        \begin{itemize}
+            \item Hệ thống thu thập dữ liệu thời gian thực (Apache Kafka, MQTT).
+            \item Công cụ xử lý dòng dữ liệu (Apache Flink, Spark Streaming, DeepStream).
+            \item Mô hình AI được triển khai dưới dạng dịch vụ hoặc nhúng trực tiếp.
+        \end{itemize}
+        \item \textbf{Công cụ hỗ trợ:}
+        \begin{itemize}
+            \item Apache Beam cho xử lý dữ liệu đa nền tảng.
+            \item Kubernetes cho quản lý và mở rộng dịch vụ.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+    
+
+\section{Đóng gói môi hình}
+
+\begin{frame}{Đóng gói mô hình với Docker}
+    \begin{itemize}
+        \item \textbf{Dockerfile}:
+        \begin{itemize}
+            \item Định nghĩa môi trường chạy mô hình, bao gồm các thư viện và phụ thuộc cần thiết.
+        \end{itemize}
+        \item \textbf{Docker Image}:
+        \begin{itemize}
+            \item Tạo ảnh chứa mô hình và môi trường, giúp triển khai nhất quán trên các hệ thống khác nhau.
+        \end{itemize}
+        \item \textbf{Docker Container}:
+        \begin{itemize}
+            \item Chạy mô hình trong môi trường cô lập, dễ dàng quản lý và mở rộng.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+    
+\begin{frame}{Tích hợp mô hình vào API với Flask hoặc FastAPI}
+    \begin{itemize}
+        \item \textbf{Flask}:
+        \begin{itemize}
+            \item Framework nhẹ, dễ sử dụng để xây dựng API đơn giản.
+        \end{itemize}
+        \item \textbf{FastAPI}:
+        \begin{itemize}
+            \item Hiệu suất cao, hỗ trợ async, phù hợp với các ứng dụng yêu cầu tốc độ phản hồi nhanh.
+        \end{itemize}
+        \item \textbf{Quy trình tích hợp}:
+        \begin{itemize}
+            \item Tải mô hình đã huấn luyện.
+            \item Định nghĩa các endpoint API để nhận dữ liệu đầu vào và trả về kết quả dự đoán.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Tối ưu hóa mô hình với ONNX}
+    \begin{itemize}
+        \item \textbf{ONNX (Open Neural Network Exchange)}: Định dạng mở giúp chuyển đổi mô hình giữa các framework như PyTorch, TensorFlow, Keras.
+        \item \textbf{ONNX Runtime}: Công cụ thực thi hiệu suất cao, hỗ trợ các kỹ thuật tối ưu như:
+        \begin{itemize}
+            \item \textbf{Quantization}: Giảm độ chính xác (FP32 → INT8) để tăng tốc độ suy luận.
+            \item \textbf{Graph Optimization}: Hợp nhất các node, loại bỏ các phép toán dư thừa.
+            \item \textbf{Mixed Precision}: Sử dụng kết hợp FP16 và FP32 để cân bằng giữa hiệu suất và độ chính xác.
+        \end{itemize}
+        \item \textbf{Lợi ích}: Giảm kích thước mô hình, tăng tốc độ suy luận và tiết kiệm tài nguyên.
+    \end{itemize}
+\end{frame}
+    
+\begin{frame}{Quy trình chuyển đổi và triển khai với ONNX}
+    \begin{enumerate}
+        \item \textbf{Chuyển đổi mô hình}: Sử dụng các công cụ như \texttt{torch.onnx.export()} để chuyển đổi mô hình từ PyTorch sang ONNX.
+        \item \textbf{Tối ưu hóa}: Áp dụng các kỹ thuật như quantization và graph optimization bằng ONNX Runtime.
+        \item \textbf{Triển khai}: Sử dụng ONNX Runtime để triển khai mô hình trên các nền tảng như cloud, edge, hoặc thiết bị di động.
+    \end{enumerate}
+    \textbf{Lưu ý}:
+    \begin{itemize}
+        \item Đảm bảo các layer trong mô hình được hỗ trợ bởi ONNX.
+        \item Kiểm tra độ chính xác của mô hình sau khi tối ưu hóa.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Tăng tốc suy luận với TensorRT}
+    \begin{itemize}
+        \item \textbf{TensorRT}: SDK của NVIDIA để tối ưu hóa và triển khai mô hình học sâu trên GPU.
+        \item \textbf{Kỹ thuật tối ưu}:
+        \begin{itemize}
+            \item \textbf{Layer Fusion}: Hợp nhất các layer để giảm độ trễ.
+            \item \textbf{Precision Calibration}: Hỗ trợ FP16 và INT8 để tăng hiệu suất.
+            \item \textbf{Kernel Auto-Tuning}: Tự động chọn kernel tối ưu cho từng layer.
+        \end{itemize}
+        \item \textbf{Lợi ích}: Giảm độ trễ suy luận, tăng throughput và tiết kiệm bộ nhớ.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Quy trình triển khai mô hình với TensorRT}
+    \begin{enumerate}
+        \item \textbf{Chuyển đổi mô hình}: Sử dụng các công cụ như \texttt{tf2onnx} hoặc \texttt{torch2trt} để chuyển đổi mô hình sang định dạng ONNX.
+        \item \textbf{Tối ưu hóa}: Dùng TensorRT để tối ưu hóa mô hình, áp dụng các kỹ thuật như quantization và layer fusion.
+        \item \textbf{Triển khai}: Sử dụng TensorRT để triển khai mô hình trên các thiết bị NVIDIA GPU.
+    \end{enumerate}
+    \textbf{Lưu ý}:
+    \begin{itemize}
+        \item Đảm bảo mô hình tương thích với TensorRT.
+        \item Kiểm tra hiệu suất và độ chính xác sau khi tối ưu hóa.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Tối ưu hóa mô hình với OpenVINO}
+    \begin{itemize}
+        \item \textbf{OpenVINO}: Bộ công cụ của Intel để tối ưu hóa và triển khai mô hình học sâu trên các thiết bị Intel.
+        \item \textbf{Tính năng}:
+        \begin{itemize}
+            \item \textbf{Model Optimizer}: Chuyển đổi và tối ưu hóa mô hình từ các framework như TensorFlow, PyTorch.
+            \item \textbf{Inference Engine}: Triển khai mô hình trên CPU, GPU, FPGA và VPU.
+            \item \textbf{Post-Training Optimization Tool}: Hỗ trợ quantization và pruning.
+        \end{itemize}
+        \item \textbf{Lợi ích}: Tăng tốc suy luận, giảm kích thước mô hình và tiết kiệm năng lượng.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Tối ưu hóa mô hình với Qualcomm AI Stack}
+    \begin{itemize}
+        \item \textbf{Qualcomm AI Stack}: Bộ công cụ phần mềm toàn diện để tối ưu hóa và triển khai mô hình AI trên các thiết bị sử dụng chip Qualcomm.
+        \item \textbf{Tính năng}:
+        \begin{itemize}
+            \item Hỗ trợ chuyển đổi và tối ưu hóa mô hình từ các framework phổ biến.
+            \item Tối ưu hóa cho hiệu suất cao và tiêu thụ năng lượng thấp trên thiết bị.
+        \end{itemize}
+        \item \textbf{Lưu ý}:
+        \begin{itemize}
+            \item Phù hợp cho các ứng dụng AI trên thiết bị di động và IoT.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Tối ưu hóa mô hình với Qualcomm AIMET}
+    \begin{itemize}
+        \item \textbf{AIMET (AI Model Efficiency Toolkit)}: Thư viện mã nguồn mở của Qualcomm để tối ưu hóa mô hình AI.
+        \item \textbf{Tính năng}:
+        \begin{itemize}
+            \item Hỗ trợ nén mô hình và lượng tử hóa để giảm kích thước và tăng tốc suy luận.
+            \item Tích hợp với các framework phổ biến như PyTorch, TensorFlow.
+        \end{itemize}
+        \item \textbf{Lưu ý}:
+        \begin{itemize}
+            \item Hữu ích cho việc triển khai mô hình trên các thiết bị có tài nguyên hạn chế.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+    
+
+% \begin{frame}{So sánh các công cụ tối ưu và triển khai mô hình AI}
+%     \scriptsize
+%     \begin{table}[]
+%     \centering
+%     \small
+%     \begin{tabular}{|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|}
+%     \hline
+%     \textbf{Tiêu chí} & \textbf{ONNX Runtime} & \textbf{TensorRT} & \textbf{OpenVINO} & \textbf{Qualcomm SNPE} \\
+%     \hline
+%     \textbf{Nhà phát triển} & Microsoft & NVIDIA & Intel & Qualcomm \\
+%     \hline
+%     \textbf{Phần cứng} & CPU, GPU, NPU & GPU NVIDIA & CPU, GPU, VPU & SoC Qualcomm (Snapdragon) \\
+%     \hline
+%     \textbf{Framework} & PyTorch, TensorFlow, Keras, Scikit-learn & ONNX, TensorFlow, PyTorch & ONNX, TensorFlow, PyTorch, Caffe & ONNX, TensorFlow, Caffe \\
+%     \hline
+%     \textbf{Tối ưu hóa} & Graph optimization, quantization, pruning & FP16, INT8, layer fusion & FP16, INT8, layer fusion & Quantization, layer fusion \\
+%     \hline
+%     \textbf{Hiệu suất} & Tốt trên đa nền tảng & Rất cao trên GPU NVIDIA & Tốt trên phần cứng Intel & Tối ưu cho thiết bị di động \\
+%     \hline
+%     \textbf{Trường hợp} & Đa mục đích, từ cloud đến edge & Ứng dụng yêu cầu hiệu suất cao trên GPU & Ứng dụng trên thiết bị Intel, edge computing & Ứng dụng di động, thiết bị nhúng \\
+%     \hline
+%     \end{tabular}
+%     \end{table}
+% \end{frame}
+    
+    
+    
+\section{Triển khai mô hình}
+
+\begin{frame}{Triển khai mô hình lên cloud}
+    \begin{itemize}
+        \item \textbf{AWS SageMaker}:
+        \begin{itemize}
+            \item Dịch vụ triển khai mô hình AI với khả năng mở rộng và quản lý dễ dàng.
+        \end{itemize}
+        \item \textbf{Google Cloud AI Platform}:
+        \begin{itemize}
+            \item Hỗ trợ triển khai và quản lý mô hình trên hạ tầng của Google.
+        \end{itemize}
+        \item \textbf{Microsoft Azure ML}:
+        \begin{itemize}
+            \item Cung cấp công cụ triển khai và giám sát mô hình AI trên nền tảng Azure.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Triển khai mô hình với Qualcomm AI Hub}
+    \begin{itemize}
+        \item \textbf{Qualcomm AI Hub}: Nền tảng giúp tối ưu hóa, xác thực và triển khai mô hình AI trên các thiết bị sử dụng chip Qualcomm.
+        \item \textbf{Tính năng}:
+        \begin{itemize}
+            \item Hỗ trợ chuyển đổi mô hình từ PyTorch, ONNX sang định dạng tối ưu cho thiết bị.
+            \item Cung cấp công cụ để kiểm tra hiệu suất và độ chính xác của mô hình trên thiết bị thực tế.
+        \end{itemize}
+        \item \textbf{Lưu ý}:
+        \begin{itemize}
+            \item Phù hợp cho việc triển khai mô hình AI trên các thiết bị di động, IoT và edge computing.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Tích hợp mô hình vào hệ thống backend}
+    \begin{itemize}
+        \item \textbf{Kết nối với cơ sở dữ liệu}:
+        \begin{itemize}
+            \item Sử dụng ORM hoặc thư viện kết nối để truy xuất và lưu trữ dữ liệu.
+        \end{itemize}
+        \item \textbf{Tích hợp vào hệ thống hiện có}:
+        \begin{itemize}
+            \item Đảm bảo mô hình hoạt động mượt mà trong kiến trúc hệ thống hiện tại.
+        \end{itemize}
+        \item \textbf{Giám sát và logging}:
+        \begin{itemize}
+            \item Theo dõi hiệu suất và lỗi để đảm bảo mô hình hoạt động ổn định.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+    
+\begin{frame}{Batch Inference – Framework Backend phổ biến}
+    \begin{itemize}
+        \item \textbf{Apache Spark MLlib}:
+        \begin{itemize}
+            \item Thư viện học máy tích hợp trong Spark, hỗ trợ xử lý dữ liệu lớn.
+        \end{itemize}
+        \item \textbf{TensorFlow Batch Inference}:
+        \begin{itemize}
+            \item Sử dụng TensorFlow Serving để triển khai mô hình cho suy luận theo lô.
+        \end{itemize}
+        \item \textbf{ONNX Runtime}:
+        \begin{itemize}
+            \item Hỗ trợ suy luận hiệu quả trên nhiều nền tảng và phần cứng khác nhau.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Online Inference – Framework Backend phổ biến}
+    \begin{itemize}
+        \item \textbf{TensorFlow Serving}:
+        \begin{itemize}
+            \item Dịch vụ triển khai mô hình TensorFlow với khả năng mở rộng cao.
+        \end{itemize}
+        \item \textbf{TorchServe}:
+        \begin{itemize}
+            \item Công cụ triển khai mô hình PyTorch, hỗ trợ RESTful API và gRPC.
+        \end{itemize}
+        \item \textbf{FastAPI}:
+        \begin{itemize}
+            \item Framework web hiện đại, hiệu suất cao, phù hợp cho triển khai mô hình nhỏ gọn.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Streaming Inference – Framework Backend phổ biến}
+    \begin{itemize}
+        \item \textbf{Apache Kafka}:
+        \begin{itemize}
+            \item Nền tảng xử lý dòng dữ liệu phân tán, hỗ trợ tích hợp với nhiều hệ thống suy luận.
+        \end{itemize}
+        \item \textbf{Apache Flink}:
+        \begin{itemize}
+            \item Framework xử lý dữ liệu dòng thời gian thực, hỗ trợ triển khai mô hình AI.
+        \end{itemize}
+        \item \textbf{TensorFlow Extended (TFX)}:
+        \begin{itemize}
+            \item Nền tảng end-to-end cho triển khai mô hình học máy, hỗ trợ xử lý dữ liệu dòng.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Giới thiệu về NVIDIA DeepStream}
+    \begin{itemize}
+        \item \textbf{DeepStream SDK}: Bộ công cụ phát triển phần mềm của NVIDIA để xây dựng các ứng dụng phân tích video thông minh (IVA).
+        \item \textbf{Hỗ trợ đa nền tảng}: Chạy trên các thiết bị NVIDIA Jetson và GPU rời (dGPU).
+        \item \textbf{Tích hợp GStreamer}: Sử dụng GStreamer để xây dựng pipeline xử lý video hiệu suất cao.
+        \item \textbf{Hỗ trợ nhiều mô hình AI}: Tích hợp dễ dàng với các mô hình được huấn luyện từ TensorFlow, PyTorch, ONNX, v.v.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Tích hợp DeepStream với Flask hoặc FastAPI}
+    \begin{itemize}
+        \item \textbf{Mục tiêu}: Tạo API để nhận dữ liệu đầu vào và trả kết quả suy luận.
+        \item \textbf{Quy trình}:
+        \begin{itemize}
+            \item Xây dựng API với Flask hoặc FastAPI.
+            \item Nhận dữ liệu đầu vào từ client.
+            \item Gửi dữ liệu vào pipeline DeepStream.
+            \item Nhận kết quả suy luận và trả về cho client.
+        \end{itemize}
+        \item \textbf{Lưu ý}:
+        \begin{itemize}
+            \item Đảm bảo xử lý đồng thời nhiều request.
+            \item Tối ưu hóa pipeline để giảm độ trễ.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Tích hợp DeepStream với gRPC}
+    \begin{itemize}
+        \item \textbf{Mục tiêu}: Sử dụng giao thức gRPC để giao tiếp giữa client và server.
+        \item \textbf{Quy trình}:
+        \begin{itemize}
+            \item Định nghĩa service và message trong file .proto.
+            \item Tạo server gRPC tích hợp với pipeline DeepStream.
+            \item Client gửi dữ liệu và nhận kết quả qua gRPC.
+        \end{itemize}
+        \item \textbf{Lưu ý}:
+        \begin{itemize}
+            \item gRPC hỗ trợ truyền dữ liệu hiệu quả và hỗ trợ nhiều ngôn ngữ.
+            \item Phù hợp với các hệ thống phân tán và microservices.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Tích hợp DeepStream với Kafka}
+    \begin{itemize}
+        \item \textbf{Mục tiêu}: Sử dụng Kafka để truyền và xử lý dữ liệu theo luồng.
+        \item \textbf{Quy trình}:
+        \begin{itemize}
+            \item DeepStream đọc dữ liệu từ Kafka topic.
+            \item Xử lý dữ liệu trong pipeline.
+            \item Gửi kết quả suy luận đến Kafka topic khác.
+        \end{itemize}
+        \item \textbf{Lưu ý}:
+        \begin{itemize}
+            \item Phù hợp với các hệ thống xử lý dữ liệu lớn và phân tán.
+            \item Đảm bảo cấu hình Kafka và DeepStream phù hợp để xử lý dữ liệu hiệu quả.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+    
+    
+\end{document}
